@@ -8,4 +8,6 @@ interface FromProps extends InternalFormType{
 
 const Form = InternalForm as FromProps;
 
+Form.Item = Item;
+
 export default Form;

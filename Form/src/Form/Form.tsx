@@ -1,4 +1,4 @@
-import { useState, useRef, type CSSProperties, type ReactElement, type FormEvent } from "react";
+import { useState, useRef, type CSSProperties, type ReactElement, type FormEvent, type ReactNode, forwardRef } from "react";
 import FormContext from "./FormContext";
 import classNames from "classnames";
 
@@ -7,8 +7,8 @@ interface FormProps {
     style?: CSSProperties,
     initialValues?: Record<string, any>,
     onFinish?: (values: Record<string, any>) => void,
-    onFinishFailed?: (errors: Record<string, any>) => void,
-    children?: ReactElement
+    onFinishFailed?: (errors: string) => void,
+    children?: ReactNode
 }
 
 const Form = (props: FormProps) => {
@@ -19,7 +19,9 @@ const Form = (props: FormProps) => {
 
     // 单个值变化时
     const onValueChange = (key: string, value: any) => {
-        values[key] = value;
+        console.log('values',values)
+        setValues(prevValues=>({...prevValues,[key]: value}))
+        
     }
 
     // 提交时，走一遍所有校验器内的校验函数
@@ -31,14 +33,15 @@ const Form = (props: FormProps) => {
             if (typeof cbfunction === 'function') {
                 errors.current[key] = cbfunction()
             }
-        }
+        };
+        console.log('errors',errors)
 
         // 去除null值
         const errorsList = Object.values(errors.current).filter(Boolean);
 
         // 根据错误长度，执行函数
         if (errorsList.length) {
-            onFinishFailed?.(errors.current)
+            onFinishFailed?.(errorsList[0])
         } else {
             onFinish?.(values)
         }
@@ -62,4 +65,5 @@ const Form = (props: FormProps) => {
         </FormContext.Provider>
     )
 };
+
 export default Form;
