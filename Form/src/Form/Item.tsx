@@ -29,28 +29,23 @@ const Item = (props: ItemProps)=>{
 
     if(!name){return children};
 
-    const [value, setValue] = useState<string | number | boolean>();
     const [error, setError] = useState('');
 
-    const {values, setValues, onValueChange, validateRegister} = useContext(FormContext);
+    const {values, setValues, onValueChange, validateRegister, reset} = useContext(FormContext);
 
-    // value同步values
+    const value = values?.[name]
+
     useEffect(()=>{
-        if(value!== values?.[name]){
-            setValue(values?.[name]);
+        if(reset){
+        setError('')
         }
-    },[values, values?.[name]]);
+    });
+    
 
     // 创建校验器
     const handleValidate = (value: any)=>{
         let errorMsg = null;
-        if(name === 'agree'){
-                    if(value === 'false'){
-                        console.log('agree',value)
-                        errorMsg = '请阅读协议！';
-                        setError(errorMsg)
-                    }
-                }
+        
         if(Array.isArray(rules) && rules.length){
             const validator= new Schema({
                 [name]:rules.map(rule=>{
@@ -59,9 +54,8 @@ const Item = (props: ItemProps)=>{
                     }
                 })
             });
-
             validator.validate({[name]: value}, (errors)=>{
-                if(errors  && name!== 'agree'){
+                if(errors ){
                     if(errors.length){
                         setError(errors[0].message!);
                         errorMsg = errors[0].message;
@@ -87,12 +81,11 @@ const Item = (props: ItemProps)=>{
     children : React.cloneElement(children as any, {
         onChange: (e: ChangeEvent<HTMLInputElement>)=>{
             const value = getValueFromEvent(e);
-            console.log('value',value)
-            
             onValueChange?.(name, value);
-            setValue(value);
             handleValidate(value);
-        }
+        },
+        value: value,
+        checked: typeof value === 'boolean' ? value : undefined
     });
 
     return (

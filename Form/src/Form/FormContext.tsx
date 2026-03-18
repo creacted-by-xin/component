@@ -8,7 +8,8 @@ export interface FromContextProps {
     // 单个表单键值对修改时，更新
     onValueChange?: (key: string, value: any)=> void,
     // 校验注册器
-    validateRegister?: (name: string, cb: Function)=> void
+    validateRegister?: (name: string, cb: Function)=> void,
+    reset?: boolean
 };
 
 export default createContext<FromContextProps>({})
