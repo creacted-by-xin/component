@@ -47,7 +47,7 @@ function App() {
           <Form.Item name='agree' style={{  display: 'flex', alignItems: 'center', userSelect: 'none' }}
             rules={[{ type: 'boolean', required: true, validator: (rule: any, value: any) => value === true ,message: '请阅读协议！' }]}>
             <input id="readed" type="checkbox" style={{ cursor: 'pointer',  margin: '0' }} />
-          </Form.Item><a style={{ cursor: 'pointer', fontSize: '8px' }}>是否同意《协议》</a>
+          </Form.Item><a style={{ cursor: 'pointer', fontSize: '8px' }}>是否阅读《协议》</a>
         </div>
       </Form>
 
