@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from "react";
+import React, { useEffect, useState, type ChangeEvent, type ReactElement } from "react";
 import { useContext } from "react";
 import FormContext from "./FormContext";
 import Schema from "async-validator";
@@ -8,7 +8,19 @@ interface ItemProps {
     name?: string,
     rules?: Record<string, any>[]
     children?: ReactElement
-}
+};
+
+const getValueFromEvent = (e: ChangeEvent<HTMLInputElement>)=>{
+    const{target} = e;
+    if(target.type === 'checkbox') {
+        return target.checked;
+    } else if (target.type === 'radio'){
+        return target.value;
+    }
+
+    return target.value
+
+};
 
 const Item = (props: ItemProps)=>{
     const {label, name, rules, children} = props;
@@ -54,7 +66,28 @@ const Item = (props: ItemProps)=>{
         return errorMsg;
     }
 
-    useEffect(()=>{validateRegister?.(name,handleValidate)},[value]);
+    useEffect(()=>{validateRegister?.(name,handleValidate)},[value, name, validateRegister]);
+
+    if (!children){return };
+
+    const childrenShow = React.Children.toArray(children).length > 1 ? 
+    children : React.cloneElement(children as ReactElement<React.JSX.IntrinsicElements['input']> , {
+        onChange: (e: ChangeEvent<HTMLInputElement>)=>{
+            const value = getValueFromEvent(e);
+            setValue(value);
+            onValueChange?.(name, value);
+
+            handleValidate(value);
+        }
+    });
+
+    return (
+        <div>
+            {label && <label>{label}</label>}
+            {childrenShow}
+             {error && <div style={{color: 'red'}}>{error}</div>}
+        </div>
+    )
 
 };
 
