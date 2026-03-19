@@ -11,45 +11,94 @@
   background-attachment: fixed;/* 固定不动 */
 }
 
-.form-wrapper {
+.login-wrapper {
     position: absolute;
-    top: 170px;
-    right: 150px;
-    width: 340px;
-    height: 240px;
-    padding: 6px 16px;
+    top: 200px;
+    right: 200px;
+    width: 360px;
+    height: 280px;
     border-radius: 8px;
-    background-color: rgba(247, 245, 241, 0.9);
+    background-color: rgba(250, 235, 215,0.9);
     display: flex;
     flex-direction: column;
-    gap: 20px;
     justify-content: center;
     align-items: center;
+    gap: 30px;
+    /* padding: 10px 50px 10px 50px; */
 }
 
-.login {
+.login-form {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.login-form input {
+    width: 176px;
+    height: 22px;
+}
+
+.register-form input {
+    width: 176px;
+    height: 22px;
+}
+
+.login-btn {
     display: flex;
-    flex-direction: column;
-    /* height: 80px; */
+    justify-content: space-between;
+    margin-top: 18px;
 }
 
-
-.register {
-    width: 400px;
-    height: 400px;
+.register-wrapper {
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
     margin: auto;
-    background-color: rgba(247, 245, 241, 0.95);
+    width: 430px;
+    height: 360px;
+    border-radius: 8px;
+    background-color: rgb(250, 235, 215);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
 }
 
 .avator {
     width: 50px;
     height: 50px;
-    display: inline-block;
     border-radius: 50%;
-    background-color: rgba(204, 156, 61, 0.95)
+    margin-top: -15px;
+    margin-right: 80px;
+    background-color: rgb(238, 197, 60);
+}
+
+
+.register-form {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+
+.register-btn {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 26px;
+}
+
+.close {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 12px;
+    text-align: center;
+    background-color: rgb(223, 157, 70);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
 }

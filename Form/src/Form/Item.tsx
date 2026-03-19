@@ -12,11 +12,11 @@ interface ItemProps {
     children?: ReactNode
 };
 
-const getValueFromEvent = (e: ChangeEvent<HTMLInputElement>)=>{
-    const{target} = e;
-    if(target.type === 'checkbox') {
+const getValueFromEvent = (e: ChangeEvent<HTMLInputElement>) => {
+    const { target } = e;
+    if (target.type === 'checkbox') {
         return target.checked;
-    } else if (target.type === 'radio'){
+    } else if (target.type === 'radio') {
         return target.value;
     }
 
@@ -24,80 +24,77 @@ const getValueFromEvent = (e: ChangeEvent<HTMLInputElement>)=>{
 
 };
 
-const Item = (props: ItemProps)=>{
-    const {className, label, name, rules, style, children} = props;
+const Item = (props: ItemProps) => {
+    const { className, label, name, rules, style, children } = props;
 
-    if(!name){return children};
+    if (!name) { return children };
 
     const [error, setError] = useState('');
 
-    const {values, setValues, onValueChange, validateRegister, reset} = useContext(FormContext);
+    const { values, setValues, onValueChange, validateRegister, reset } = useContext(FormContext);
 
     const value = values?.[name]
 
-    useEffect(()=>{
-        if(reset){
-        setError('')
+    useEffect(() => {
+        if (reset) {
+            setError('')
         }
     });
-    
+
 
     // 创建校验器
-    const handleValidate = (value: any)=>{
+    const handleValidate = (value: any) => {
         let errorMsg = null;
-        
-        if(Array.isArray(rules) && rules.length){
-            const validator= new Schema({
-                [name]:rules.map(rule=>{
+
+        if (Array.isArray(rules) && rules.length) {
+            const validator = new Schema({
+                [name]: rules.map(rule => {
                     return {
-                            ...rule
+                        ...rule
                     }
                 })
             });
-            validator.validate({[name]: value}, (errors)=>{
-                if(errors ){
-                    if(errors.length){
+            validator.validate({ [name]: value }, (errors) => {
+                if (errors) {
+                    if (errors.length) {
                         setError(errors[0].message!);
                         errorMsg = errors[0].message;
                     }
-                }else{
+                } else {
                     setError('')
-                    errorMsg= null
+                    errorMsg = null
                 }
             })
         }
         return errorMsg;
     }
 
-    useEffect(()=>{
-        validateRegister?.(name, ()=>handleValidate(value))
+    useEffect(() => {
+        validateRegister?.(name, () => handleValidate(value))
     },
-    [value, name, validateRegister]);
+        [value, name, validateRegister]);
 
-    if (!children){return };
+    if (!children) { return };
 
 
-    const childrenShow = React.Children.toArray(children).length > 1 ? 
-    children : React.cloneElement(children as any, {
-        onChange: (e: ChangeEvent<HTMLInputElement>)=>{
-            const value = getValueFromEvent(e);
-            onValueChange?.(name, value);
-            handleValidate(value);
-        },
-        value: value,
-        checked: typeof value === 'boolean' ? value : undefined
-    });
+    const childrenShow = React.Children.toArray(children).length > 1 ?
+        children : React.cloneElement(children as any, {
+            onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                const value = getValueFromEvent(e);
+                onValueChange?.(name, value);
+                handleValidate(value);
+            },
+            value: value,
+            checked: typeof value === 'boolean' ? value : undefined
+        });
 
     return (
-        <div className={className} style={{...style,height: '40px', }}>
-            {label && <span style={{position:'relative', 
-                // marginRight: '6px',
-                display:'inline-block',
-                width:'56px'}}>{label}:
-                <label style={{position:'absolute'}}></label>
-                </span>}
-            {childrenShow}
-             {label && error && <div style={{color: 'red',fontSize:'9px'}}>{error}</div>}
+        <div className={className} style={{height: '40px', marginBottom:'4px'}}>
+                <div style={{ display:'flex', justifyContent: 'space-between', alignItems: 'start'}}>
+                    {label && <span style={{marginRight: '20px'}}>{label}:</span>}
+                    {childrenShow}
+                </div>
+            {label && error && <div style={{ color: 'red', fontSize: '9px' }}>{error}</div>}
         </div>
     )
 

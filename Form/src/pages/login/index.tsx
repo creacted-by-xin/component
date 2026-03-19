@@ -4,15 +4,19 @@ import Register from './Register';
 import './index.css'
 
 function App() {
-    const [loginRegister, setLoginRegister] = useState(true)
+    const [loginRegister, setLoginRegister] = useState(false);
+
+    function hendleRegister(value: boolean){
+        setLoginRegister(value)
+    };
+     
     return (
         <div className='login-img'>
             <div className='form-wrapper'>
-                <div style={{fontWeight:'bold',fontSize:'22px'}}>登录</div>
-                <LoginForm />
+                <LoginForm hendleRegister={hendleRegister} />
             </div>
 
-            {loginRegister && <Register/>}
+            {loginRegister && <Register hendleRegister={hendleRegister}/>}
         </div>
     )
 }
