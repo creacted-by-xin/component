@@ -1,0 +1,70 @@
+.upload-btn {
+  display: inline-block;
+}
+
+.input-btn {
+  display: none;
+}
+
+.dragger {
+  box-sizing: border-box;
+  height: 200px;
+  width: 300px;
+  text-align: center;
+  padding-top: 30px;
+  border: 2px dashed #aaa;
+  background: rgba(#eee, 1);
+  cursor: pointer;
+  user-select: none; 
+
+  &-isOver {
+    border: 2px dashed blue;
+   background: rgba(blue, 0.3);
+  }
+}
+
+.upload-list {
+  width: 400px;
+  padding: 0px;
+}
+
+span{
+    padding: 0 4px;
+}
+
+
+.upload-item {
+    list-style: none;
+    margin: 5px;
+    font-weight: 500;
+    font-size: 14px;
+
+    box-sizing: border-box;
+    position: relative;
+
+    &-success {
+        color: blue;
+    }
+
+    &-error {
+        color: red;
+    }
+
+    .delete-btn {
+    position: absolute;
+    right: 0px;
+    display: none;
+    }
+
+    &:hover {
+        .delete-btn {
+            display: inline-block;
+        }
+    }
+}
+
+.progress {
+  width: 300px;
+}
+
+
