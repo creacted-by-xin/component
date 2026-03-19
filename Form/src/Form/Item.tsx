@@ -97,7 +97,7 @@ const Item = (props: ItemProps)=>{
                 <label style={{position:'absolute'}}></label>
                 </span>}
             {childrenShow}
-             {label && error && <div style={{color: 'red'}}>{error}</div>}
+             {label && error && <div style={{color: 'red',fontSize:'12px'}}>{error}</div>}
         </div>
     )
 
