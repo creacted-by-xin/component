@@ -17,8 +17,9 @@
     right: 150px;
     width: 340px;
     height: 240px;
+    padding: 6px 16px;
     border-radius: 8px;
-    background-color: rgb(247, 245, 241);
+    background-color: rgba(247, 245, 241, 0.9);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -26,3 +27,29 @@
     align-items: center;
 }
 
+.login {
+    display: flex;
+    flex-direction: column;
+    /* height: 80px; */
+}
+
+
+.register {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: rgba(247, 245, 241, 0.95);
+}
+
+.avator {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgba(204, 156, 61, 0.95)
+}

@@ -25,7 +25,7 @@ const getValueFromEvent = (e: ChangeEvent<HTMLInputElement>)=>{
 };
 
 const Item = (props: ItemProps)=>{
-    const {label, name, rules, style, children} = props;
+    const {className, label, name, rules, style, children} = props;
 
     if(!name){return children};
 
@@ -89,15 +89,15 @@ const Item = (props: ItemProps)=>{
     });
 
     return (
-        <div style={style}>
+        <div className={className} style={{...style,height: '40px', }}>
             {label && <span style={{position:'relative', 
-                marginRight: '6px',
+                // marginRight: '6px',
                 display:'inline-block',
-                width:'60px'}}>{label}:
+                width:'56px'}}>{label}:
                 <label style={{position:'absolute'}}></label>
                 </span>}
             {childrenShow}
-             {label && error && <div style={{color: 'red',fontSize:'12px'}}>{error}</div>}
+             {label && error && <div style={{color: 'red',fontSize:'9px'}}>{error}</div>}
         </div>
     )
 

@@ -3,7 +3,7 @@ import Form from '../../../Form/index';
 import type { FormRefType } from '../../../Form/Form';
 
 function LoginForm() {
-    const initialValues = { userName: '', password: '', agree: false };
+    const initialValues = { loginId: '', password: '', agree: false };
     const FormRef = useRef<FormRefType>(null);
     const onFinish = () => {
         alert('登录成功！！');
@@ -24,19 +24,21 @@ function LoginForm() {
 
     return (
         <Form ref={FormRef} onFinish={onFinish} onFinishFailed={onFinishFailed} initialValues={initialValues}>
-            <Form.Item label='用户名' name='userName'
-                rules={[{ type: 'string', required: true, message: '用户名不能为空' },
-                { type: 'string', min: 6, max: 12, message: '用户名长度为6-12位' }
+            <div className='login'>
+            <Form.Item className={'login-item'}label='账号' name='loginId'
+                rules={[{ type: 'string', required: true, message: '账号不能为空'},
+                { pattern: /^[a-zA-Z][a-zA-Z0-9_]{5,9}$/, message: '账号必须6-10位，以字母开头，仅支持字母、数字、下划线' }
                 ]}>
                 <input></input>
             </Form.Item>
             <Form.Item label='密码' name='password'
                 rules={[{ type: 'string', required: true, message: '密码不能为空' },
-                { type: 'string', min: 8, max: 16, message: '密码长度为8-16位' }
+                { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}$/, message: '密码必须6-12位，同时包含大写字母、小写字母、数字' }
                 ]}>
                 <input></input>
             </Form.Item>
-            <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '150px' }}>
+            </div>
+            <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '150px' }}>
                 <button type='submit' style={{ cursor: 'pointer' }}>登录</button>
                 <button type="button" style={{ cursor: 'pointer' }} onClick={() => handleReset()}>重置</button>
             </div>
@@ -45,7 +47,9 @@ function LoginForm() {
                 <Form.Item name='agree' style={{ display: 'flex', alignItems: 'center', userSelect: 'none' }}
                     rules={[{ type: 'boolean', required: true, validator: (rule: any, value: any) => value === true, message: '请阅读协议！' }]}>
                     <input id="readed" type="checkbox" style={{ cursor: 'pointer', margin: '0' }} />
-                </Form.Item><a style={{ cursor: 'pointer', fontSize: '8px' }}>是否阅读《协议》</a>
+                </Form.Item>
+                <a style={{ cursor: 'pointer', fontSize: '8px' }}>是否阅读《协议》</a>
+                <a style={{ cursor: 'pointer', fontSize: '8px', marginLeft: 'auto'}}>注册账号</a>
             </div>
         </Form>
     )
