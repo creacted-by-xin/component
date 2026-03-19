@@ -1,0 +1,31 @@
+.message-wrapper {
+  margin: auto;
+  position: relative;
+  
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.message-top {
+  position: absolute;
+  top: 10px;
+}
+
+.message-boton {
+  position: absolute;
+  bottom: 10px;
+}
+
+.message-item {
+  margin: 20px;
+  width: 100px;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid #000;
+  box-shadow: 0 0 10px #ccc;
+}
