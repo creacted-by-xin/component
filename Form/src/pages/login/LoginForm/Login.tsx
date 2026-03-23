@@ -3,6 +3,7 @@ import Form from '../../../Form/index';
 import type { FormRefType } from '../../../Form/Form';
 
 
+
 function LoginForm(props:{hendleRegister: (value: boolean) => void} ) {
     const {hendleRegister} =props;
     const initialValues = { loginId: '', password: '', agree: false };
@@ -15,7 +16,7 @@ function LoginForm(props:{hendleRegister: (value: boolean) => void} ) {
     };
 
     const onFinishFailed = (error: string) => {
-        alert(error);
+        // alert(error);
     };
 
     const handleReset = () => {
