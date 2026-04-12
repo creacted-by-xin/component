@@ -1,0 +1,40 @@
+.container {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.container::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+.container:hover::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.container:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(30, 166, 235, 0.894);
+}
+
+.box {
+  width: 50px;
+  height: 50px;
+  background: blue;
+  margin: 10px;
+}
+
+.dragging {
+  border: 5px dashed #000;
+  box-sizing: border-box;
+}
+
+.drag-layer {
+  z-index: -1;
+  position: fixed;
+}
