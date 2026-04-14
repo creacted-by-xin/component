@@ -12,12 +12,12 @@ export const Todolist: FC<TodolistProps> = ( props)=> {
     return <div className=" border-2 border-solid 
     w-250 h-150 m-auto mt-10 p-10
     flex justify-between items-start">
-        <div className=" flex-2 h-full bg-blue-400 mr-10">
+        <div className=" flex-2 h-full mr-10 overflow-auto">
             <List></List>
         </div>
-        <div className="flex-2 h-full bg-blue-400">
+        <div className="flex-1 h-full flex flex-col justify-start gap-10">
             <NewItem></NewItem>
-            <GarbageBin></GarbageBin>
+            <GarbageBin ></GarbageBin>
         </div>
     </div>
 }
