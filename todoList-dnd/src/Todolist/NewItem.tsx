@@ -26,7 +26,7 @@ export const NewItem: FC<NewItemProps> = (props) => {
     return (<div className={classNames(props.className,
         " h-25 border-2 border=black",
         "text-center leading-25 text-2xl",
-        "bg-green-300",
+        isDragging? "" : "bg-green-300",
         "cursor-move select-none")} ref={NewItemReg}>
         新的待办事项
     </div>)

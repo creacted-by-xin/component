@@ -1,4 +1,5 @@
 import { create } from 'zustand'; 
+import { persist } from 'zustand/middleware';
 
 export interface ListItem {
     id: number,
@@ -14,7 +15,7 @@ interface StoreType {
 }
 
 
-export const useTodoListStore = create<StoreType>((set)=> ({
+export const useTodoListStore = create (persist<StoreType>(((set)=> ({
     list: [],
     addItem: (item: ListItem)=> set((state)=> ({list: [...state.list, item]})),
     deleteItem: (id: number)=> set(state => ({list: state.list.filter(item=>item.id!==id)})),
@@ -23,5 +24,9 @@ export const useTodoListStore = create<StoreType>((set)=> ({
             return updateItem
         }
         return item
-    })})),
+    })}))
+})),{
+    name: 'todolist'
 }))
+
+

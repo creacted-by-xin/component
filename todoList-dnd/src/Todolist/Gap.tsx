@@ -10,7 +10,7 @@ function Gap() {
     
         const [{isOver}, drop ] = useDrop({
             accept: ['new-item'],
-            drop(item){
+            drop(){
                 addItem({
                     id: Math.random(),
                     status: 'todo',

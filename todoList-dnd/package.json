@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-spring/web": "^10.0.3",
     "classnames": "^2.5.1",
     "react": "^19.2.4",
     "react-dnd": "^16.0.1",

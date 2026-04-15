@@ -30,7 +30,7 @@ export const GarbageBin: FC<GarbageBinProps> = (props) => {
  
     return <div className={classNames(props.className, 
     " h-50 border-2 border=black",
-    "bg-orange-300",
+    isOver?" bg-red-300" : "bg-orange-300",
     "leading-50 text-center text-2xl",
     "cursor-move select-none")} ref={GarbageBinRef}>
         垃圾箱
