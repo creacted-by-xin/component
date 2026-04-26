@@ -1,0 +1,32 @@
+import { useContext, useEffect, useState } from "react";
+import { PlaygroundContext } from "../components/PlaygroundContext";
+import FileNameItem from "./FileNameItem";
+import { initFiles } from "../files";
+
+export default function FileList() {
+  const { 
+        files, 
+        removeFile, 
+        addFile, 
+        updateFileName, 
+        selectedFileName,
+        setSelectedFileName
+    } = useContext(PlaygroundContext);
+
+    const [tabs, setTabs] = useState(['']);
+
+    useEffect(()=> {
+      setTabs(Object.keys(files));
+    }, [files])
+
+  return (
+    <div>{
+      tabs.map((item, index)=> (
+        <FileNameItem key={item+index} 
+        onClick={() => setSelectedFileName(item)} 
+        value={item}
+        actived={selectedFileName === item}/>
+      ))
+      }</div>
+  )
+}
