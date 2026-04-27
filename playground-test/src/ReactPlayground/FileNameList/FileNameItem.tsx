@@ -9,7 +9,7 @@ interface FileNameItemProps {
 
 export default function FileNameItem( props: FileNameItemProps) {
     const {value, actived, onClick} = props
-    return (<div className={classnames(styles['tab-item'], actived ? styles.actived : null)}
+    return (<div className={classnames(styles['tabs-item'], actived ? styles.actived : null)}
     onClick={onClick}
     >{value}</div>)
 }

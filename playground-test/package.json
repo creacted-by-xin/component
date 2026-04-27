@@ -16,7 +16,8 @@
     "allotment": "^1.20.5",
     "classnames": "^2.5.1",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

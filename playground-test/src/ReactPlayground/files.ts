@@ -1,19 +1,74 @@
 import { type Files } from "./components/PlaygroundContext";
+import main from './template/main.tsx?raw';
+import App from "./template/App.tsx?raw";
+import css from './template/App.css?raw'
+import importMap from './template/import-map.json?raw'
+import { fileName2Language } from "./utils";
+
+export const IMPORT_MAP_NAME = 'import-map.json';
+export const ENTRY_FILE_NAME = 'main.tsx';
+export const APP_COMPONENT_FILE_NAME = 'App.tsx'
 
 export const initFiles: Files = {
-    'main.tsx': {
-        name: 'main.tsx',
-        value: '111',
-        language: 'typescript'
+    [IMPORT_MAP_NAME]: {
+        name: IMPORT_MAP_NAME,
+        value: importMap,
+        language: fileName2Language(IMPORT_MAP_NAME)
     },
-    'App.tsx': {
-        name: 'App.jsx',
-        value: '222',
-        language: 'typescript'
+    [ENTRY_FILE_NAME]: {
+        name: ENTRY_FILE_NAME,
+        value: main,
+        language: fileName2Language(ENTRY_FILE_NAME)
     },
-    'App.css': {
+     [APP_COMPONENT_FILE_NAME]: {
+        name: APP_COMPONENT_FILE_NAME,
+        value: App,
+        language: fileName2Language(APP_COMPONENT_FILE_NAME)
+    },
+     'App.css': {
         name: 'App.css',
-        value: '333',
-        language: 'css'
+        value: css,
+        language: fileName2Language('App.css')
     },
+    'App2.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App3.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App4.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App5.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App6.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App7.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App8.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    'App9.css': {
+        name: 'App.css',
+        value: css,
+        language: fileName2Language('App.css')
+    },
+    
 }
