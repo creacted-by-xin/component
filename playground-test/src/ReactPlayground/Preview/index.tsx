@@ -7,13 +7,13 @@ export default function Preview() {
 
     const { files} = useContext(PlaygroundContext);
     const [compiledCode, setCompiledCode] = useState('');
-    console.log('files',files)
+    console.log('files2',files)
 
     useEffect(() => {
         const res = compile(files);
         setCompiledCode(res);
         console.log('触发')
-    });
+    },[{...files}]);
 
     return <div style={{height: '100%'}}>
         <Editor file={{

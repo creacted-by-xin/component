@@ -13,13 +13,14 @@ export default function CodeEditor() {
     selectedFileName,
     setSelectedFileName
   } = useContext(PlaygroundContext)
+  console.log('selectedFileName', selectedFileName)
 
-  const file = files[selectedFileName]
+  const file = files[selectedFileName];
 
   function onEditorChange(value?: string) {
     files[file.name].value = value!;
     console.log('修改编辑器',files)
-    setFiles(files);
+    setFiles({...files});
 };
 
 
@@ -27,7 +28,7 @@ export default function CodeEditor() {
 return (
   <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
     <FileList />
-    <Editor file={file} onChange={debounce(onEditorChange, 2000)} />
+    <Editor file={file} onChange={debounce(onEditorChange, 500)} />
   </div>
 )
 };

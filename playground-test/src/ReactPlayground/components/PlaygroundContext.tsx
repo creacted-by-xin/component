@@ -2,7 +2,7 @@ import { createContext, useState, type PropsWithChildren } from "react";
 import { fileName2Language } from "../utils";
 import { initFiles } from "../files";
 
-interface File {
+export interface File {
     name: string,
     value: string,
     language: string
@@ -23,14 +23,15 @@ interface PlaygroundContext {
 };
 
 export const PlaygroundContext = createContext<PlaygroundContext>({
-    selectedFileName: 'App.tsx'
+    selectedFileName: 'main.tsx'
 } as PlaygroundContext);
 
 export function PlaygroundProvider(props: PropsWithChildren) {
     const { children } = props;
     const [files, setFiles] = useState<Files>(initFiles);
-    const [selectedFileName, setSelectedFileName] = useState('App.tsx');
+    const [selectedFileName, setSelectedFileName] = useState('main.tsx');
 
+    console.log('files-PlaygroundProvider', files)
 
     const addFile = (name: string) => {
         files[name] = {

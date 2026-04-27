@@ -63,3 +63,21 @@
         }
     }
 }
+
+
+.tabs-item-input {
+    width: 90px;
+    font-size: 13px;
+    padding: 4px 0 4px 10px;
+
+    color: #444;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: auto;
+}
+
+.add {
+    cursor: pointer;
+    margin-right: 10px;
+}

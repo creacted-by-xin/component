@@ -8,7 +8,6 @@ export const babelTransform = (code: string, filename: string, files: Files) => 
         result = transform(code, {
             presets: ['react', 'typescript'],
             filename,
-            plugins: [],
             retainLines: true
         }).code!
      } catch(e) {
@@ -16,6 +15,7 @@ export const babelTransform = (code: string, filename: string, files: Files) => 
      }
     return result
 }
+
 
 export const compile = (files: Files)=> {
     const main =  files[ENTRY_FILE_NAME];
