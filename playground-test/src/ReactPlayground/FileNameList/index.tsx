@@ -1,56 +1,69 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState, type MouseEventHandler } from "react";
 import { PlaygroundContext } from "../components/PlaygroundContext";
 import FileNameItem from "./FileNameItem";
-import styles from '../index.module.scss'
+import { ENTRY_FILE_NAME, APP_COMPONENT_FILE_NAME, IMPORT_MAP_NAME } from "../files";
+import styles from '../index.module.scss';
 
 export default function FileList() {
-  const { 
-        files, 
-        removeFile, 
-        addFile, 
-        updateFileName, 
-        selectedFileName,
-        setSelectedFileName
-    } = useContext(PlaygroundContext);
+  const {
+    files,
+    removeFile,
+    addFile,
+    updateFileName,
+    selectedFileName,
+    setSelectedFileName
+  } = useContext(PlaygroundContext);
 
-    const [tabs, setTabs] = useState(['']);
-    const [creating, setCreating] = useState(false);
+  const readonlyFIleNames = [ ENTRY_FILE_NAME, APP_COMPONENT_FILE_NAME, IMPORT_MAP_NAME ];
+  const [tabs, setTabs] = useState(['']);
+  const [creating, setCreating] = useState(false);
+  const countRef = useRef(1);
 
-    const  handleEditComplete = (oldFileName: string, newFileName: string)=> {
-      updateFileName(oldFileName, newFileName);
-      setSelectedFileName(newFileName)
-    };
+  const handleEditComplete = (oldFileName: string, newFileName: string) => {
+    updateFileName(oldFileName, newFileName);
+    setSelectedFileName(newFileName)
+  };
 
-     function handleAdd() {
-      addFile('请输入文件名！')
-      setCreating(true)
-      console.log('请输入文件名！')
-     };
+  function handleAdd() {
+    addFile(`新建文件(${countRef.current}).jsx`)
+    countRef.current++;
+    setCreating(true)
+    console.log('请输入文件名！')
+  };
 
-     function handleCreating() {
-      setCreating(false)
-     }
+  function handleCreating() {
+    setCreating(false)
+  }
 
-    useEffect(()=> {
-      setTabs(Object.keys(files));
-    }, [files])
+  function handleRemove(name: string) {
+    setSelectedFileName(ENTRY_FILE_NAME);
+    removeFile(name);
+  };
+
+  useEffect(() => {
+    setTabs(Object.keys(files));
+  }, [files])
 
   return (
     <div className={styles.tabs}>{
-      tabs.map((item, index)=> (
-        <FileNameItem key={item+index} 
-        onClick={() => setSelectedFileName(item)} 
-        value={item}
-        creating = {creating && index === (tabs.length-1)}
-        handleCreating={()=>handleCreating()}
-        actived={selectedFileName === item}
-        onEditComplete={(name: string )=> handleEditComplete(item, name)}
+      tabs.map((item, index) => (
+        <FileNameItem key={item + index}
+          onClick={() => setSelectedFileName(item)}
+          value={item}
+          readonly = {readonlyFIleNames.includes(item)}
+          creating={creating && index === (tabs.length - 1)}
+          handleCreating={() => handleCreating()}
+          actived={selectedFileName === item}
+          onEditComplete={(name: string) => handleEditComplete(item, name)}
+          handleRemove={() => {
+            handleRemove(item)
+          }}
         />
       ))
-      }
+    }
       {
         !creating && <div className={styles.add} onClick={handleAdd}>+</div>
       }
-      </div>
+    </div>
   )
 }
