@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import styles from '../index.module.scss';
-import { useState, type MouseEventHandler } from 'react';
+import { useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 

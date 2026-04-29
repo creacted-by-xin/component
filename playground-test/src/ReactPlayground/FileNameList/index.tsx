@@ -1,7 +1,7 @@
-import { useContext, useEffect, useRef, useState, type MouseEventHandler } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { PlaygroundContext } from "../components/PlaygroundContext";
 import FileNameItem from "./FileNameItem";
-import { ENTRY_FILE_NAME, APP_COMPONENT_FILE_NAME, IMPORT_MAP_NAME } from "../files";
+import { ENTRY_FILE_NAME, APP_COMPONENT_FILE_NAME, IMPORT_MAP_File_NAME } from "../files";
 import styles from '../index.module.scss';
 
 export default function FileList() {
@@ -14,7 +14,7 @@ export default function FileList() {
     setSelectedFileName
   } = useContext(PlaygroundContext);
 
-  const readonlyFIleNames = [ ENTRY_FILE_NAME, APP_COMPONENT_FILE_NAME, IMPORT_MAP_NAME ];
+  const readonlyFIleNames = [ ENTRY_FILE_NAME, APP_COMPONENT_FILE_NAME, IMPORT_MAP_File_NAME ];
   const [tabs, setTabs] = useState(['']);
   const [creating, setCreating] = useState(false);
   const countRef = useRef(1);

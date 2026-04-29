@@ -3,7 +3,6 @@ import Editor from "./Editor";
 import { PlaygroundContext } from "./components/PlaygroundContext";
 import { useContext } from "react";
 import { debounce } from 'lodash-es';
-import { type Files } from './components/PlaygroundContext'
 
 export default function CodeEditor() {
 
@@ -11,7 +10,6 @@ export default function CodeEditor() {
     files,
     setFiles,
     selectedFileName,
-    setSelectedFileName
   } = useContext(PlaygroundContext)
   console.log('selectedFileName', selectedFileName)
 
