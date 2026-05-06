@@ -29,7 +29,8 @@ export const babelTransform = (filename: string, code: string, files: Files) => 
 }
 
 const getModuleFile = (files: Files, modulePath: string) => {
-    let moduleName = modulePath.split('./').pop() || ''
+    let moduleName = modulePath.split('./').pop() || '';
+    console.log('moduleName',moduleName)
     if (!moduleName.includes('.')) {
         const realModuleName = Object.keys(files).filter(key => {
             return key.endsWith('.ts') 
@@ -44,6 +45,7 @@ const getModuleFile = (files: Files, modulePath: string) => {
         }
       }
       console.log('Looking for module:', moduleName, 'in files keys:', Object.keys(files));
+      console.log('files[moduleName]', files[moduleName]);
     return files[moduleName]
 }
 

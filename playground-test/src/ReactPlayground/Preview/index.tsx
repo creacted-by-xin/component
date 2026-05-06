@@ -4,6 +4,14 @@ import Editor from "../Editor";
 import { compile } from "./compiler";
 import iframeRaw from './iframe.html?raw';
 import { IMPORT_MAP_File_NAME } from '../files';
+import { Message } from "../components/Message";
+
+interface MessageData {
+    data: {
+        type: string,
+        message: string
+    }
+}
 
 export default function Preview() {
 
@@ -33,6 +41,21 @@ export default function Preview() {
         setIframeUrl(getIframeUrl())
     }, [files[IMPORT_MAP_File_NAME].value, compiledCode]);
 
+    const [error, setError] = useState('')
+
+    const handleMessage = (msg: MessageData) => {
+        const { type, message } = msg.data
+        if (type === 'ERROR') {
+          setError(message)
+        }
+    }
+        useEffect(() => {
+        window.addEventListener('message', handleMessage)
+        return () => {
+          window.removeEventListener('message', handleMessage)
+        }
+    }, [])
+
     return <div style={{ height: '100%' }}>
         {/* <Editor file={{
             name: 'dist.js',
@@ -40,7 +63,7 @@ export default function Preview() {
             language: 'javascript'
         }} /> */}
 
-        <iframe
+        {iframeUrl && <><iframe
             src={iframeUrl}
             style={{
                 width: '100%',
@@ -49,5 +72,7 @@ export default function Preview() {
                 border: 'none',
             }}
         />
+        <Message type='error' content={error}/></>
+        }
     </div>
 }

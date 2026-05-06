@@ -12,9 +12,13 @@ export interface Files {
     [key: string]: File
 };
 
+export type Theme = 'light' | 'dark';
+
 interface PlaygroundContext {
     files: Files,
     selectedFileName: string,
+    theme: Theme,
+    setTheme: (theme: Theme)=> void
     setSelectedFileName: (fileName: string) => void,
     setFiles: (files: Files) => void,
     addFile: (fileName: string) => void,
@@ -30,6 +34,7 @@ export function PlaygroundProvider(props: PropsWithChildren) {
     const { children } = props;
     const [files, setFiles] = useState<Files>(initFiles);
     const [selectedFileName, setSelectedFileName] = useState('main.tsx');
+    const [theme, setTheme] = useState<Theme>('light');
 
     console.log('files-PlaygroundProvider', files)
 
@@ -65,6 +70,8 @@ export function PlaygroundProvider(props: PropsWithChildren) {
     return <PlaygroundContext.Provider
         value={{
             files,
+            theme,
+            setTheme,
             selectedFileName,
             setSelectedFileName,
             setFiles,
