@@ -29,25 +29,5 @@ export const initFiles: Files = {
         name: 'App.css',
         value: css,
         language: fileName2Language('App.css')
-    },
-    'App2.css': {
-        name: 'App.css',
-        value: css,
-        language: fileName2Language('App.css')
-    },
-    'App3.css': {
-        name: 'App.css',
-        value: css,
-        language: fileName2Language('App.css')
-    },
-    'App4.css': {
-        name: 'App.css',
-        value: css,
-        language: fileName2Language('App.css')
-    },
-    'App5.css': {
-        name: 'App.css',
-        value: css,
-        language: fileName2Language('App.css')
-    },
+    }
 }

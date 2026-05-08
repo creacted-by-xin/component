@@ -1,6 +1,7 @@
-import { createContext, useState, type PropsWithChildren } from "react";
+import { createContext, useEffect, useState, type PropsWithChildren } from "react";
 import { fileName2Language } from "../utils";
 import { initFiles } from "../files";
+import { compress, uncompress } from "../utils";
 
 export interface File {
     name: string,
@@ -30,9 +31,22 @@ export const PlaygroundContext = createContext<PlaygroundContext>({
     selectedFileName: 'main.tsx'
 } as PlaygroundContext);
 
+const getFilesFromUrl = ()=> {
+    let files : Files | undefined;
+
+    try{
+        const hash = uncompress(decodeURIComponent(window.location.hash.slice(1)));
+        files = JSON.parse(hash);
+    } catch(error) {
+        console.error(error)
+    };
+
+    return files;
+}
+
 export function PlaygroundProvider(props: PropsWithChildren) {
     const { children } = props;
-    const [files, setFiles] = useState<Files>(initFiles);
+    const [files, setFiles] = useState<Files>(getFilesFromUrl() || initFiles);
     const [selectedFileName, setSelectedFileName] = useState('main.tsx');
     const [theme, setTheme] = useState<Theme>('light');
 
@@ -66,6 +80,14 @@ export function PlaygroundProvider(props: PropsWithChildren) {
 
         setFiles({ ...rest, ...newFile })
     };
+
+    useEffect(()=>{
+        // 1. 把 files 对象转换成 JSON 字符串
+        const hash = compress(JSON.stringify(files));
+        // 2. 把字符串编码后，存入浏览器地址栏的 # 部分
+        window.location.hash = encodeURIComponent(hash);
+        console.log('files修改')
+    },[JSON.stringify(files)])
 
     return <PlaygroundContext.Provider
         value={{
