@@ -1,15 +1,16 @@
 import style from './index.module.scss';
 import logoSvg from './icons/logo.svg';
-import { MoonOutlined, SunOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { MoonOutlined, SunOutlined, ShareAltOutlined, DownloadOutlined } from '@ant-design/icons';
 import { message } from 'antd'
 import { PlaygroundContext } from './components/PlaygroundContext';
 import copy from 'copy-to-clipboard';
 import { useContext } from 'react';
+import { downloadFiles } from './utils';
 
 import styles from './index.module.scss'
 
 export default function Header() {
-    const { theme, setTheme } = useContext(PlaygroundContext);
+    const { files, theme, setTheme } = useContext(PlaygroundContext);
 
     return (
         <div className={style.header}>
@@ -32,6 +33,13 @@ export default function Header() {
                     onClick={() => {
                         copy(window.location.href);
                         message.success('分享链接已复制。')
+                    }}
+                />
+                <DownloadOutlined
+                    style={{ marginLeft: '10px' }}
+                    onClick={async () => {
+                        await downloadFiles(files);
+                        message.success('下载完成')
                     }}
                 />
             </div>
