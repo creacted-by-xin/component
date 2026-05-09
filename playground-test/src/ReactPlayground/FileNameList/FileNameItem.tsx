@@ -17,7 +17,6 @@ interface FileNameItemProps {
 
 export default function FileNameItem(props: FileNameItemProps) {
     const { value, actived = false, creating, readonly, handleCreating, onEditComplete, onClick, handleRemove } = props;
-    console.log(creating, value);
 
     const [isEditor, setIsEditor] = useState(false);
     const [name, setName] = useState(value);

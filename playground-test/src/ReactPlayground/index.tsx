@@ -9,7 +9,6 @@ import './index.scss';
 
 export default function ReactPlayground() {
     const {theme} = useContext(PlaygroundContext);
-    console.log('theme',theme)
 
     return(
         <div className={theme} style={{height: '100vh'}}>

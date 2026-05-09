@@ -63,7 +63,6 @@ export default function Upload(props: UploadProps) {
         if (inputRef.current) {
             inputRef.current?.value === ''
         }
-        console.log('111', inputRef.current?.value)
     };
 
     const uploadFiles = (files: FileList) => {
@@ -81,7 +80,6 @@ export default function Upload(props: UploadProps) {
     }
 
     const post = (file: File) => {
-        console.log(file)
         let uploadList: UploadListType= {
             fileId: Date.now() ,
             status:'ready',

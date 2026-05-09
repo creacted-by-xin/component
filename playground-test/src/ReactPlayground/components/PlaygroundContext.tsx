@@ -50,8 +50,6 @@ export function PlaygroundProvider(props: PropsWithChildren) {
     const [selectedFileName, setSelectedFileName] = useState('main.tsx');
     const [theme, setTheme] = useState<Theme>('light');
 
-    console.log('files-PlaygroundProvider', files)
-
     const addFile = (name: string) => {
         files[name] = {
             name,
@@ -86,7 +84,6 @@ export function PlaygroundProvider(props: PropsWithChildren) {
         const hash = compress(JSON.stringify(files));
         // 2. 把字符串编码后，存入浏览器地址栏的 # 部分
         window.location.hash = encodeURIComponent(hash);
-        console.log('files修改')
     },[JSON.stringify(files)])
 
     return <PlaygroundContext.Provider

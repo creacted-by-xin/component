@@ -37,7 +37,6 @@ function Card(props: CardProps) {
     const [, dropRef] = useDrop({
         accept: 'card',
         // drop: (item: DragData)=> {
-        //     console.log('放下了',item)
         //     swapIndex( index, item.index)
         // },
         hover: (item: DragData) => {

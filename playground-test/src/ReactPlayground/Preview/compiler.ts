@@ -1,4 +1,5 @@
 import { transform } from "@babel/standalone";
+// import { transformSync } from '@babel/core';
 import {type Files, type  File} from "../components/PlaygroundContext";
 import { ENTRY_FILE_NAME } from "../files";
 
@@ -21,7 +22,7 @@ export const babelTransform = (filename: string, code: string, files: Files) => 
       filename,
       plugins: [customResolver(files)],
       retainLines: true
-    }).code!
+    })?.code!
   } catch (e) {
     console.error('编译出错', e);
   }
@@ -30,7 +31,6 @@ export const babelTransform = (filename: string, code: string, files: Files) => 
 
 const getModuleFile = (files: Files, modulePath: string) => {
     let moduleName = modulePath.split('./').pop() || '';
-    console.log('moduleName',moduleName)
     if (!moduleName.includes('.')) {
         const realModuleName = Object.keys(files).filter(key => {
             return key.endsWith('.ts') 
@@ -44,8 +44,6 @@ const getModuleFile = (files: Files, modulePath: string) => {
             moduleName = realModuleName
         }
       }
-      console.log('Looking for module:', moduleName, 'in files keys:', Object.keys(files));
-      console.log('files[moduleName]', files[moduleName]);
     return files[moduleName]
 }
 
@@ -66,7 +64,8 @@ const css2Js = (file: File) => {
     stylesheet.innerHTML = ''
     stylesheet.appendChild(styles)
 })()
-    `
+    `;
+    
     return URL.createObjectURL(new Blob([js], { type: 'application/javascript' }))
 }
 
@@ -101,3 +100,14 @@ export const compile = (files: Files) => {
   const main = files[ENTRY_FILE_NAME]
   return babelTransform(ENTRY_FILE_NAME, main.value, files)
 }
+
+// self.addEventListener('message', async ({ data }) => {
+//     try {
+//         self.postMessage({
+//             type: 'COMPILED_CODE',
+//             data: compile(data)
+//         })
+//     } catch (e) {
+//          self.postMessage({ type: 'ERROR', error: e })
+//     }
+// })

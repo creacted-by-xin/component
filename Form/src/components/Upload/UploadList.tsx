@@ -17,7 +17,6 @@ interface UploadListprops {
 
 export default function UploadList( props: UploadListprops) {
     const {fileList, onRemove}= props;
-    console.log('UploadList',UploadList)
   return (
     <ul className="upload-list">
     {

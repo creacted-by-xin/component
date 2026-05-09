@@ -40,12 +40,10 @@ function Card(props: CardProps) {
     const [, drop] = useDrop({
         accept: 'card',
         // drop(item: DragData) {
-        //     console.log(item);
         //     swapIndex(index, item.index)
         // }
         hover(item: DragData) {
             if(item.id === index) return;
-            console.log(item);
             swapIndex(index, item.index)
             item.index = index
         }

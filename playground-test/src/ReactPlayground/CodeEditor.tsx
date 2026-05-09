@@ -12,13 +12,11 @@ export default function CodeEditor() {
     setFiles,
     selectedFileName,
   } = useContext(PlaygroundContext)
-  console.log('selectedFileName', selectedFileName)
 
   const file = files[selectedFileName];
 
   function onEditorChange(value?: string) {
     files[file.name].value = value!;
-    console.log('修改编辑器',files)
     setFiles({...files});
 };
 

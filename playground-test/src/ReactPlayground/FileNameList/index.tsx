@@ -28,7 +28,6 @@ export default function FileList() {
     addFile(`新建文件(${countRef.current}).jsx`)
     countRef.current++;
     setCreating(true)
-    console.log('请输入文件名！')
   };
 
   function handleCreating() {

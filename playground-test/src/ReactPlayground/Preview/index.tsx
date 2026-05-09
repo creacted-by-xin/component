@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { PlaygroundContext } from "../components/PlaygroundContext";
-import Editor from "../Editor";
+// import CompilerWorker  from "./compiler.worker?worker";
 import { compile } from "./compiler";
 import iframeRaw from './iframe.html?raw';
 import { IMPORT_MAP_File_NAME } from '../files';
@@ -18,13 +18,31 @@ export default function Preview() {
     const { files } = useContext(PlaygroundContext);
     const [compiledCode, setCompiledCode] = useState('');
     const [iframeUrl, setIframeUrl] = useState('');
-    console.log('files2', files)
 
     useEffect(() => {
         const res = compile(files);
         setCompiledCode(res);
-        console.log('触发')
-    }, [{ ...files }]);
+    }, [files]);
+
+// const compilerWorkerRef = useRef<Worker>(null);
+
+//     useEffect(() => {
+//         if(!compilerWorkerRef.current) {
+//             compilerWorkerRef.current = new CompilerWorker();
+//             compilerWorkerRef.current.addEventListener('message', ({data}) => {
+//                 console.log('worker', data);
+//                 if(data.type === 'COMPILED_CODE') {
+//                     setCompiledCode(data.data);
+//                 } else {
+//                     //console.log('error', data);
+//                 }
+//             })
+//         }
+//     }, []);
+
+    // useEffect(() => {
+    //     compilerWorkerRef.current?.postMessage(files)
+    // }, [files]);
 
     const getIframeUrl = () => {
         const res = iframeRaw.replace('<script type="importmap"></script>',

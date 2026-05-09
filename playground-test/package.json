@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.2.2",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@babel/standalone": "^7.29.2",
     "@monaco-editor/react": "^4.7.0",
     "@typescript/ata": "^0.9.8",

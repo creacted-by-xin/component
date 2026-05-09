@@ -8,7 +8,6 @@ export function createAta(onDownloadFile: (code: string, path: string)=> void) {
         logger: console,
         delegate: {
             receivedFile: (code: string, path: string) => {
-                console.log('自动下载的包', path);
                 onDownloadFile(code, path)
             }
         }

@@ -84,7 +84,6 @@ export const MessageProvider= forwardRef<MessageRef,{position?: Position }>((pro
     //         add({
     //             content: '123'
     //         })
-    //         console.log('add')
     //     }, 1000)
 
     //     return () => clearInterval(timer)
