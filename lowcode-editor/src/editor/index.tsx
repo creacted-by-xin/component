@@ -1,4 +1,5 @@
 import { Allotment } from "allotment";
+import 'allotment/dist/style.css';
 import Header from "./components/Header";
 import Materail from "./components/Materail";
 import EditArea from "./components/EditArea";
@@ -10,7 +11,7 @@ export default function ReactPlayground() {
         <div className='h-15 flex items-center border-b border-black'>
            <Header/>
         </div>
-        <Allotment className="flex-1">
+        <Allotment >
             <Allotment.Pane preferredSize={240} maxSize={300} minSize={200}>
                 <Materail/>
             </Allotment.Pane>
