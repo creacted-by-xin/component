@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PlaygroundContext } from "../components/PlaygroundContext";
 // import CompilerWorker  from "./compiler.worker?worker";
 import { compile } from "./compiler";
