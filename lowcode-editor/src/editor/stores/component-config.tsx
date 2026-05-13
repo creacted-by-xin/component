@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import Container from "../materials/Container";
 import Button from "../materials/Button";
+import Page from "../materials/Page";
 
 interface ComponentConfigType {
     name: string,
@@ -19,6 +20,11 @@ interface Action {
 
 export const useComponentConfigStore = create<State & Action>((set) => ({
     componentConfig: {
+        Page: {
+            name: 'Page',
+            defaultProps: {},
+            component: Page
+        },
         Container: {
             name: 'Container',
             defaultProps: {},
@@ -26,7 +32,10 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
         },
         Button: {
             name: 'Button',
-            defaultProps: {},
+            defaultProps: {
+                type: 'primary',
+                text: '按钮'
+            },
             component: Button
         },
     },

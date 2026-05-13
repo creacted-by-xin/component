@@ -8,7 +8,7 @@ interface Button {
 
 export default function Button({type, text}: Button) {
   return (
-    <AndtButton type={type}
-    >{text}</AndtButton>
+    <AndtButton type={type}>{text}</AndtButton>
+    // <div>{type}+{text}</div>
   )
 }

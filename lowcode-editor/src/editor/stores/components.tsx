@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 //组件类型
 export interface ComponentType {
@@ -22,55 +22,61 @@ interface Action {
 };
 
 // 创建仓库啦～
-export const useComponentsStore= create<State & Action>((set, get)=>({
+export const useComponentsStore = create<State & Action>((set, get) => ({
     components: [{
         id: 1,
         name: 'Page',
         props: {},
-        desc: '页面'
+        children: []
     }],
-    addComponent: (component: ComponentType, parentId: number) => {set((state) => {
-        // 如果存在父组件，增加到父组件的children下
-        // 如果没有，直接增加到根数组
-        if(parentId) {
-            // 找父组件
-            const parentComponent = getComponentsById(parentId, state.components);
+    addComponent: (component: ComponentType, parentId: number) => {
+        set((state) => {
+            // 如果存在父组件，增加到父组件的children下
+            // 如果没有，直接增加到根数组
+            if (parentId) {
+                // 找父组件
+                const parentComponent = getComponentsById(parentId, state.components);
+                console.log('parentId',parentId)
+                console.log('parentComponent',parentComponent)
+                console.log('state.components',state.components)
 
-            if( parentComponent ) {
-                // 如果父组件有其他children数组，push进去
-                // 如果没有，这增加数组
-                if( parentComponent.children) {
-                    parentComponent.children.push(component);
-                } else {
-                    parentComponent.children = [component];
+
+                if (parentComponent) {
+                    // 如果父组件有其他children数组，push进去
+                    // 如果没有，这增加数组
+                    if (parentComponent.children) {
+                        parentComponent.children.push(component);
+                    } else {
+                        parentComponent.children = [component];
+                    }
                 }
-            }
 
-            component.parentId = parentComponent?.id;
+                component.parentId = parentComponent?.id;
+                // 这样才是有效更新（引用地址变了）
+                return ({ components: [...state.components] })
+            };
+
+            // 没有父组件，直接增加到根数组
             // 这样才是有效更新（引用地址变了）
-            return ({components: [...state.components]})
-        };
-
-        // 没有父组件，直接增加到根数组
-        // 这样才是有效更新（引用地址变了）
-        return ({components: [...state.components, component]})
-    })},
+            return ({ components: [...state.components, component] })
+        })
+    },
     deleteComponent: (componentId: number) => {
         // 如果没有组件ID，直接返回
-        if(!componentId) return;
+        if (!componentId) return;
 
         //  只有子组件能删除（根组件不删）
         // 找到要删除的组件，看看它是否有父组件
         // 如果有，拿到父组件，从父组件filter掉
         const component = getComponentsById(componentId, get().components);
-        if(component.parentId) {
+        if (component.parentId) {
             const parentComponent = getComponentsById(component.parentId, get().components);
-            if(parentComponent){
+            if (parentComponent) {
                 parentComponent.children = parentComponent.children.filter(item => item.id !== +componentId)
             }
 
             // 这样才是有效更新（引用地址变了）
-            set({components: [...get().components]})
+            set({ components: [...get().components] })
         };
 
     },
@@ -78,24 +84,26 @@ export const useComponentsStore= create<State & Action>((set, get)=>({
         // 找到组件，合并新旧属性
         const component = getComponentsById(componentId, get().components);
 
-        if(component) {
-            component.props = {...component.props, ...props};
+        if (component) {
+            component.props = { ...component.props, ...props };
         };
 
         // 这样才是有效更新（引用地址变了）
-        set({components: [...get().components]});
+        set({ components: [...get().components] });
     }
 }));
 
 //根据ID找到组件
-function getComponentsById(id: number | null, components: ComponentType[] ): ComponentType | null {
-    if(!id) return null;
+function getComponentsById(id: number | null, components: ComponentType[]): ComponentType | null {
+    if (!id) return null;
+    let result = null; 
 
     for (const component of components) {
         if (component.id === id) return component;
         if (component.children && component.children.length > 0) {
-            const result = getComponentsById(id, component.children);
-            return result;
+            result = getComponentsById(id, component.children);
+            if (result) return result;
         }
     }
+    return result;
 }
