@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 
 //组件类型
-interface ComponentType {
+export interface ComponentType {
     id: number,
     name: string,
     props: any,
@@ -46,7 +46,7 @@ export const useComponentsStore= create<State & Action>((set, get)=>({
                 }
             }
 
-            component.parentId = parentComponent.id;
+            component.parentId = parentComponent?.id;
             // 这样才是有效更新（引用地址变了）
             return ({components: [...state.components]})
         };

@@ -1,8 +1,10 @@
-import { useEffect } from "react";
-import { useComponentsStore } from "../stores/components"
+import React, { useEffect } from "react";
+import { useComponentsStore, type ComponentType } from "../stores/components";
+import { useComponentConfigStore } from "../stores/component-config";
 
 export default function EditArea() {
   const { components, addComponent, deleteComponent, updateComponent } = useComponentsStore();
+  const { componentConfig } = useComponentConfigStore();
 
   useEffect(() => {
     addComponent({
@@ -15,7 +17,9 @@ export default function EditArea() {
     addComponent({
       id: 333,
       name: 'Container',
-      props: {},
+      props: {
+         text: '无敌'
+      },
       children: [],
     }, 222);
 
@@ -28,6 +32,26 @@ export default function EditArea() {
     }, 5000)
   }, []);
 
+  function renderConponents(components: ComponentType[]): React.ReactNode{
+    return components.map((component: ComponentType)=>{
+      // 拿到对应的配置对象
+      const config = componentConfig?.[component.name];
+
+      // 配置对象是否配置了该组件
+      // 没配置
+      if(!config?.component) return null;
+
+      // 配置了
+      return React.createElement(config.component, 
+        {
+          key: component.id,
+          ...config.defaultProps,
+          ...component.props
+        },
+        renderConponents(component.children || []))
+    })
+  };
+
   return (
     <div>
       <pre>
@@ -37,6 +61,7 @@ export default function EditArea() {
           JSON.stringify(components, null, 2)
         }
       </pre>
+      {renderConponents(components)}
     </div>
   )
 }
