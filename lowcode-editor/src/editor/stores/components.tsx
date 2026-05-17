@@ -4,7 +4,7 @@ import { create } from 'zustand';
 export interface ComponentType {
     id: number,
     name: string,
-    props: any,
+    props: Record<string, any>,
     children?: ComponentType[],
     parentId?: number
 };
@@ -36,10 +36,8 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
             if (parentId) {
                 // 找父组件
                 const parentComponent = getComponentsById(parentId, state.components);
-                console.log('parentId',parentId)
-                console.log('parentComponent',parentComponent)
-                console.log('state.components',state.components)
-
+                
+                if(!parentComponent) return;
 
                 if (parentComponent) {
                     // 如果父组件有其他children数组，push进去
@@ -69,10 +67,11 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         // 找到要删除的组件，看看它是否有父组件
         // 如果有，拿到父组件，从父组件filter掉
         const component = getComponentsById(componentId, get().components);
-        if (component.parentId) {
+        if(!component?.parentId) return;
+        if (component?.parentId) {
             const parentComponent = getComponentsById(component.parentId, get().components);
             if (parentComponent) {
-                parentComponent.children = parentComponent.children.filter(item => item.id !== +componentId)
+                parentComponent.children = parentComponent.children?.filter(item => item.id !== +componentId)
             }
 
             // 这样才是有效更新（引用地址变了）
@@ -94,7 +93,7 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 }));
 
 //根据ID找到组件
-function getComponentsById(id: number | null, components: ComponentType[]): ComponentType | null {
+export function getComponentsById(id: number | null, components: ComponentType[]): ComponentType | null {
     if (!id) return null;
     let result = null; 
 

@@ -1,1 +1,9 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+.setting-scroll {
+  scrollbar-width: none;
+}
+
+.setting-scroll:hover{
+  scrollbar-width: thin;
+}

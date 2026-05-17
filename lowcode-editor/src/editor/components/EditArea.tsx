@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, type MouseEventHandler } from "react";
 import { useComponentsStore, type ComponentType } from "../stores/components";
 import { useComponentConfigStore } from "../stores/component-config";
 import Button from "../materials/Button";
-
+import { message } from "antd";
+import HoverMask from "./HoverMask";
 
 
 export default function EditArea() {
@@ -15,7 +16,7 @@ export default function EditArea() {
       name: 'Container',
       props: {},
       children: [],
-    }, 222);
+    }, 1);
 
     addComponent({
       id: 555,
@@ -49,8 +50,25 @@ export default function EditArea() {
     })
   };
 
+  const [hoverComponentId, setHoverComponentId] = useState<number>();
+
+  const handleMouseOver: MouseEventHandler = (e)=> {
+    const path = e.nativeEvent.composedPath();
+
+    for(let i = 0; i < path.length; i++) {
+      const ele = path[i] as HTMLElement;
+
+      const componentId = ele.dataset?.componentId;
+      if(componentId) {
+        setHoverComponentId(+componentId);
+        return;
+      }
+    }
+  };
+
   return (
-    <div className="h-full">
+    <div className="h-full editor-area" onMouseOver={handleMouseOver} 
+    onMouseLeave={()=>{setHoverComponentId(undefined)}}>
       {/* <pre>
         {
           // JSON.stringify() 的作用：把 JavaScript 对象 / 数组，变成字符串。
@@ -59,6 +77,12 @@ export default function EditArea() {
         }
       </pre> */}
       {renderConponents(components)}
+      {hoverComponentId? <HoverMask
+      portalWrapperClassName='portal-wrapper'
+      containerClassName='editor-area'
+      componentId = {hoverComponentId!}
+      /> : ''}
+      <div className="portal-wrapper"></div>
     </div>
   )
 }
