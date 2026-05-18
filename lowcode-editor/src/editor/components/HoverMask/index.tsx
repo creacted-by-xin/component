@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react"
 import { createPortal } from "react-dom";
 import { getComponentsById, useComponentsStore } from "../../stores/components";
-import { useStore } from "zustand";
+import { message } from "antd";
 
 interface HoverMaskProps {
     portalWrapperClassName: string,
@@ -23,7 +23,7 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
 
     useEffect(() => {
         updatePositon();
-    }, [componentId]);
+    }, [componentId, components]);
 
     function updatePositon() {
         if (!componentId) return;
@@ -58,7 +58,7 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
 
     const el = useMemo(() => {
         const el = document.querySelector(`.${portalWrapperClassName}`);
-        return el;
+        return el!;
     }, []);
 
     const curComponentByID = useMemo(() => {
@@ -99,7 +99,7 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
                 cursor: "pointer",
                 whiteSpace: 'nowrap'
             }}>
-                {curComponentByID?.name}
+                {curComponentByID?.desc}
             </div>
         </div>
     </>, el)

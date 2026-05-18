@@ -4,16 +4,18 @@ import { useComponentConfigStore } from "../stores/component-config";
 import Button from "../materials/Button";
 import { message } from "antd";
 import HoverMask from "./HoverMask";
+import SelectedMask from "./SelectedMask"
 
 
 export default function EditArea() {
-  const { components, addComponent, deleteComponent, updateComponent } = useComponentsStore();
+  const { components, curComponentId, addComponent, deleteComponent, updateComponent, setCurComponentId} = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
 
   useEffect(() => {
     addComponent({
       id: 444,
       name: 'Container',
+      desc: '容器',
       props: {},
       children: [],
     }, 1);
@@ -21,6 +23,7 @@ export default function EditArea() {
     addComponent({
       id: 555,
       name: 'Button',
+      desc: '按钮',
       props: {
          text: '无敌'
       },
@@ -66,9 +69,24 @@ export default function EditArea() {
     }
   };
 
+  const handleClick: MouseEventHandler = (e)=> {
+    const path = e.nativeEvent.composedPath();
+
+    for(let i = 0; i < path.length; i++) {
+      const ele = path[i] as HTMLElement;
+
+      const componentId = ele.dataset?.componentId;
+      if(componentId) {
+        setCurComponentId(+componentId);
+        return;
+      }
+    }
+  };
+
   return (
     <div className="h-full editor-area" onMouseOver={handleMouseOver} 
-    onMouseLeave={()=>{setHoverComponentId(undefined)}}>
+    onMouseLeave={()=>{setHoverComponentId(undefined)}}
+    onClick={handleClick}>
       {/* <pre>
         {
           // JSON.stringify() 的作用：把 JavaScript 对象 / 数组，变成字符串。
@@ -77,11 +95,16 @@ export default function EditArea() {
         }
       </pre> */}
       {renderConponents(components)}
-      {hoverComponentId? <HoverMask
+      {(hoverComponentId && hoverComponentId!==curComponentId)&& <HoverMask
       portalWrapperClassName='portal-wrapper'
       containerClassName='editor-area'
       componentId = {hoverComponentId!}
-      /> : ''}
+      /> }
+      {curComponentId&& <SelectedMask
+      portalWrapperClassName='portal-wrapper'
+      containerClassName='editor-area'
+      componentId = {curComponentId!}
+      /> }
       <div className="portal-wrapper"></div>
     </div>
   )

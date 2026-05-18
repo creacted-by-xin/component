@@ -2,7 +2,7 @@ import { useDrop } from "react-dnd";
 import  { useComponentsStore } from "../stores/components";
 import { useComponentConfigStore } from "../stores/component-config";
 
-export function useMamerialDrop(parentId, accept: string[]) {
+export function useMamerialDrop(parentId: number, accept: string[]) {
     const {addComponent} = useComponentsStore();
     const {componentConfig} = useComponentConfigStore();
 
@@ -14,12 +14,13 @@ export function useMamerialDrop(parentId, accept: string[]) {
                   return;
                 };
                 
-          const props = componentConfig[item.type].defaultProps;
-    
+          const config = componentConfig[item.type];
+
           addComponent({
             id: new Date().getTime(),
             name: item.type,
-            props
+            desc: config.desc,
+            props: config.defaultProps
           }, parentId);
         },
         collect:(monitor)=> ({

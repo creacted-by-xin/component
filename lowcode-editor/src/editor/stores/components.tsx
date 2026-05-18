@@ -4,6 +4,7 @@ import { create } from 'zustand';
 export interface ComponentType {
     id: number,
     name: string,
+    desc: string,
     props: Record<string, any>,
     children?: ComponentType[],
     parentId?: number
@@ -11,7 +12,9 @@ export interface ComponentType {
 
 // 仓库数据类型
 interface State {
-    components: ComponentType[]
+    components: ComponentType[],
+    curComponentId?: number | null,
+    curComponent?: ComponentType | null
 };
 
 // store仓库方法
@@ -19,6 +22,7 @@ interface Action {
     addComponent: (component: ComponentType, parentId: number) => void,
     deleteComponent: (componentId: number) => void,
     updateComponent: (componentId: number, props: any) => void,
+    setCurComponentId: (componentId: number | null) => void
 };
 
 // 创建仓库啦～
@@ -26,9 +30,11 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
     components: [{
         id: 1,
         name: 'Page',
+        desc: '页面',
         props: {},
         children: []
     }],
+    curComponentId: null,
     addComponent: (component: ComponentType, parentId: number) => {
         set((state) => {
             // 如果存在父组件，增加到父组件的children下
@@ -36,8 +42,8 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
             if (parentId) {
                 // 找父组件
                 const parentComponent = getComponentsById(parentId, state.components);
-                
-                if(!parentComponent) return;
+
+                if (!parentComponent) return;
 
                 if (parentComponent) {
                     // 如果父组件有其他children数组，push进去
@@ -67,7 +73,7 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         // 找到要删除的组件，看看它是否有父组件
         // 如果有，拿到父组件，从父组件filter掉
         const component = getComponentsById(componentId, get().components);
-        if(!component?.parentId) return;
+        if (!component?.parentId) return;
         if (component?.parentId) {
             const parentComponent = getComponentsById(component.parentId, get().components);
             if (parentComponent) {
@@ -89,13 +95,17 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 
         // 这样才是有效更新（引用地址变了）
         set({ components: [...get().components] });
-    }
+    },
+    setCurComponentId: (componentId: number | null) => set(state => ({
+        curComponentId: componentId,
+        curComponent: getComponentsById(componentId, state.components)
+    }))
 }));
 
 //根据ID找到组件
 export function getComponentsById(id: number | null, components: ComponentType[]): ComponentType | null {
     if (!id) return null;
-    let result = null; 
+    let result = null;
 
     for (const component of components) {
         if (component.id === id) return component;
