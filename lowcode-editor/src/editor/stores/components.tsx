@@ -21,7 +21,7 @@ interface State {
 interface Action {
     addComponent: (component: ComponentType, parentId: number) => void,
     deleteComponent: (componentId: number) => void,
-    updateComponent: (componentId: number, props: any) => void,
+    updateComponentProps: (componentId: number, props: any) => void,
     setCurComponentId: (componentId: number | null) => void
 };
 
@@ -32,8 +32,18 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         name: 'Page',
         desc: '页面',
         props: {},
-        children: []
-    }],
+        children: [
+            {
+                id: 2,
+                name: 'Button',
+                desc: '按钮',
+                props: { text: '你好', type: 'primary' },
+                children: [],
+                parentId: 1
+            }
+        ]
+    }
+    ],
     curComponentId: null,
     addComponent: (component: ComponentType, parentId: number) => {
         set((state) => {
@@ -43,7 +53,7 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
                 // 找父组件
                 const parentComponent = getComponentsById(parentId, state.components);
 
-                if (!parentComponent) return;
+                if (!parentComponent) return state;
 
                 if (parentComponent) {
                     // 如果父组件有其他children数组，push进去
@@ -85,7 +95,7 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         };
 
     },
-    updateComponent: (componentId: number, props: any) => {
+    updateComponentProps: (componentId: number, props: any) => {
         // 找到组件，合并新旧属性
         const component = getComponentsById(componentId, get().components);
 

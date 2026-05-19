@@ -1,35 +1,33 @@
 import React, { useEffect, useState, type MouseEventHandler } from "react";
 import { useComponentsStore, type ComponentType } from "../stores/components";
 import { useComponentConfigStore } from "../stores/component-config";
-import Button from "../materials/Button";
-import { message } from "antd";
 import HoverMask from "./HoverMask";
 import SelectedMask from "./SelectedMask"
 
 
 export default function EditArea() {
-  const { components, curComponentId, addComponent, deleteComponent, updateComponent, setCurComponentId} = useComponentsStore();
+  const { components, curComponentId, setCurComponentId} = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
 
-  useEffect(() => {
-    addComponent({
-      id: 444,
-      name: 'Container',
-      desc: '容器',
-      props: {},
-      children: [],
-    }, 1);
+  // useEffect(() => {
+  //   addComponent({
+  //     id: 444,
+  //     name: 'Container',
+  //     desc: '容器',
+  //     props: {},
+  //     children: [],
+  //   }, 1);
 
-    addComponent({
-      id: 555,
-      name: 'Button',
-      desc: '按钮',
-      props: {
-         text: '无敌'
-      },
-      children: [],
-    }, 444);
-  }, []);
+  //   addComponent({
+  //     id: 555,
+  //     name: 'Button',
+  //     desc: '按钮',
+  //     props: {
+  //        text: '无敌'
+  //     },
+  //     children: [],
+  //   }, 444);
+  // }, []);
 
   function renderConponents(components: ComponentType[]): React.ReactNode{
     return components.map((component: ComponentType)=>{

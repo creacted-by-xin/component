@@ -1,7 +1,7 @@
-import { useEffect, useState, useMemo, use } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { createPortal } from "react-dom";
 import { getComponentsById, useComponentsStore } from "../../stores/components";
-import { Space, Popconfirm, Dropdown, message } from "antd";
+import { Space, Popconfirm, Dropdown } from "antd";
 import { DeleteOutlined } from '@ant-design/icons';
 
 interface HoverMaskProps {
@@ -28,9 +28,11 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
 
     useEffect(()=>{
         window.addEventListener('resize', updatePositon);
+        window.addEventListener('scroll', updatePositon);
 
         return ()=>{
-            window.removeEventListener('resize', updatePositon)
+            window.removeEventListener('resize', updatePositon);
+            window.removeEventListener('scroll', updatePositon);
         }
     },[])
 
@@ -80,12 +82,14 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
         return el!;
     }, []);
 
+    if (!el) return null;
+
     const curSelectedComponent = useMemo(() => {
         return getComponentsById(componentId, components);
     }, [componentId]);
 
     const handleDelete = () => {
-        deleteComponent(curComponentId!);
+        deleteComponent(componentId!);
         setCurComponentId(null)
     };
 
@@ -95,9 +99,9 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
 
         while (component?.parentId) {
             component = getComponentsById(component?.parentId, components);
-            parentComponents.push(component);
+            parentComponents?.push(component);
         };
-        console.log(parentComponents)
+        
         return parentComponents;
     }, [curComponent]);
 

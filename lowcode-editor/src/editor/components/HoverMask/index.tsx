@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from "react"
 import { createPortal } from "react-dom";
 import { getComponentsById, useComponentsStore } from "../../stores/components";
-import { message } from "antd";
 
 interface HoverMaskProps {
     portalWrapperClassName: string,
@@ -24,6 +23,16 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
     useEffect(() => {
         updatePositon();
     }, [componentId, components]);
+
+    useEffect(()=>{
+        window.addEventListener('resize', updatePositon);
+        window.addEventListener('scroll', updatePositon);
+        
+        return ()=>{
+            window.removeEventListener('resize', updatePositon);
+            window.removeEventListener('scroll', updatePositon);
+        }
+    },[]);
 
     function updatePositon() {
         if (!componentId) return;
@@ -60,6 +69,8 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
         const el = document.querySelector(`.${portalWrapperClassName}`);
         return el!;
     }, []);
+
+    if (!el) return null;
 
     const curComponentByID = useMemo(() => {
         return getComponentsById(componentId, components);

@@ -3,10 +3,24 @@ import Container from "../materials/Container";
 import Button from "../materials/Button";
 import Page from "../materials/Page";
 
+export interface ComponentSettingType {
+    // 字段名
+    name: string,
+    // 前面的文字标签
+    label: string,
+    // 属性类型
+    type: string,
+    // 属性值
+    [key: string]: any
+};
+
 interface ComponentConfigType {
     name: string,
     desc: string,
+    // 组件默认属性
     defaultProps: Record<string, any>,
+    // 组件可设置属性
+    setter?: ComponentSettingType[],
     // 对应哪个组件
     component: any
 };
@@ -40,6 +54,22 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                 type: 'primary',
                 text: '按钮'
             },
+            setter: [
+                {
+                    name: 'type',
+                    label: '按钮类型',
+                    type: 'select',
+                    options: [
+                        { label: '主按钮', value: ' primary' },
+                        { label: '次按钮', value: ' default' },
+                    ],
+                },
+                {
+                    name: 'text',
+                    label: '文本',
+                    type: 'input',
+                }
+            ],
             component: Button
         },
     },

@@ -6,8 +6,9 @@ import ComponentStyle from "./ComponentStyle";
 import ComponentEvent from "./ComponentEvent";
 
 export default function Setting() {
-  const { components } = useComponentsStore();
-  const [ key, setKey ] = useState('属性')
+  const { curComponentId } = useComponentsStore();
+
+  const [ key, setKey ] = useState('属性');
   return (
     <div className="setting-scroll h-full overflow-auto">
       <Segmented value={key} onChange={setKey}
