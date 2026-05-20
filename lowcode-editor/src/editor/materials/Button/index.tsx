@@ -2,9 +2,11 @@ import {Button as AndtButton} from "antd";
 import {type  CommonComponentProps } from '../../interface';
 
 
-export default function Button({id, type, text}: CommonComponentProps) {
+export default function Button({id, type, text, style}: CommonComponentProps) {
   return (
-    <AndtButton data-component-id={id} type={type}>{text}</AndtButton>
+    <AndtButton data-component-id={id} type={type} style={style}>
+      {text}
+    </AndtButton>
     // <div>{type}+{text}</div>
   )
 }

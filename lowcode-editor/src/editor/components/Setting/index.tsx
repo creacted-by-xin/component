@@ -13,9 +13,9 @@ export default function Setting() {
     <div className="setting-scroll h-full overflow-auto">
       <Segmented value={key} onChange={setKey}
       options={['属性', '样式', '事件']} block />
-      { key==='属性' && <ComponentAttr/>}
-      { key==='样式' && <ComponentStyle/>}
-      { key==='事件' && <ComponentEvent/>}
+      { key==='属性'&& curComponentId && <ComponentAttr/>}
+      { key==='样式'&& curComponentId  && <ComponentStyle/>}
+      { key==='事件'&& curComponentId  && <ComponentEvent/>}
     </div>
   )
 }

@@ -29,7 +29,7 @@ export default function EditArea() {
   //   }, 444);
   // }, []);
 
-  function renderConponents(components: ComponentType[]): React.ReactNode{
+  function renderCommponents(components: ComponentType[]): React.ReactNode{
     return components.map((component: ComponentType)=>{
       // 拿到对应的配置对象
       const config = componentConfig?.[component.name];
@@ -37,17 +37,17 @@ export default function EditArea() {
       // 配置对象是否配置了该组件
       // 没配置
       if(!config?.component) return null;
-
       // 配置了
       return React.createElement(config.component, 
         {
           key: component.id,
           id: component.id,
           name: component.name,
+          style: component.style,
           ...config.defaultProps,
           ...component.props
         },
-        renderConponents(component.children || []))
+        renderCommponents(component.children || []))
     })
   };
 
@@ -92,7 +92,7 @@ export default function EditArea() {
           JSON.stringify(components, null, 2)
         }
       </pre> */}
-      {renderConponents(components)}
+      {renderCommponents(components)}
       {(hoverComponentId && hoverComponentId!==curComponentId)&& <HoverMask
       portalWrapperClassName='portal-wrapper'
       containerClassName='editor-area'

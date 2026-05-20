@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { create } from 'zustand';
 
 //组件类型
@@ -5,6 +6,7 @@ export interface ComponentType {
     id: number,
     name: string,
     desc: string,
+    style?: CSSProperties,
     props: Record<string, any>,
     children?: ComponentType[],
     parentId?: number
@@ -21,6 +23,7 @@ interface State {
 interface Action {
     addComponent: (component: ComponentType, parentId: number) => void,
     deleteComponent: (componentId: number) => void,
+    updateComponentStyles: (componentId: number, style: CSSProperties) => void,
     updateComponentProps: (componentId: number, props: any) => void,
     setCurComponentId: (componentId: number | null) => void
 };
@@ -95,16 +98,29 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         };
 
     },
-    updateComponentProps: (componentId: number, props: any) => {
-        // 找到组件，合并新旧属性
-        const component = getComponentsById(componentId, get().components);
-
-        if (component) {
-            component.props = { ...component.props, ...props };
-        };
-
-        // 这样才是有效更新（引用地址变了）
-        set({ components: [...get().components] });
+    updateComponentProps: (componentId: number, props: any) => (
+        set((state) => {
+            // 找到组件
+            const component = getComponentsById(componentId, state.components);
+            // 如果组件存在，合并属性
+            if (component) {
+                component.props = { ...component.props, ...props };
+            };
+            // 如果不存在，返回原状态
+            return ({ components: [...state.components] })
+        })
+    ),
+    updateComponentStyles: (componentId: number, style: CSSProperties) => {
+        set((state) => {
+            // 找到组件
+            const component = getComponentsById(componentId, state.components);
+            // 如果组件存在，合并属性
+            if (component) {
+                component.style = { ...component.style, ...style };
+            };
+            // 如果不存在，返回原状态
+            return ({ components: [...state.components] })
+        })
     },
     setCurComponentId: (componentId: number | null) => set(state => ({
         curComponentId: componentId,

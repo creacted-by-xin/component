@@ -3,6 +3,7 @@ import Container from "../materials/Container";
 import Button from "../materials/Button";
 import Page from "../materials/Page";
 
+
 export interface ComponentSettingType {
     // 字段名
     name: string,
@@ -21,6 +22,7 @@ interface ComponentConfigType {
     defaultProps: Record<string, any>,
     // 组件可设置属性
     setter?: ComponentSettingType[],
+    styleSetter?: ComponentSettingType[],
     // 对应哪个组件
     component: any
 };
@@ -39,6 +41,18 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
             name: 'Page',
             desc: '页面',
             defaultProps: {},
+            styleSetter: [
+                {
+                    name: 'height',
+                    label: '高度',
+                    type: 'inputNumber',
+                },
+                {
+                    name: 'width',
+                    label: '宽度',
+                    type: 'inputNumber',
+                }
+            ],
             component: Page
         },
         Container: {
@@ -60,14 +74,26 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                     label: '按钮类型',
                     type: 'select',
                     options: [
-                        { label: '主按钮', value: ' primary' },
-                        { label: '次按钮', value: ' default' },
+                        { label: '主按钮', value: 'primary' },
+                        { label: '次按钮', value: 'default' },
                     ],
                 },
                 {
                     name: 'text',
                     label: '文本',
                     type: 'input',
+                }
+            ],
+            styleSetter: [
+                {
+                    name: 'height',
+                    label: '高度',
+                    type: 'inputNumber',
+                },
+                {
+                    name: 'width',
+                    label: '宽度',
+                    type: 'inputNumber',
                 }
             ],
             component: Button

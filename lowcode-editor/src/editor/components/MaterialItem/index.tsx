@@ -23,6 +23,7 @@ export default function MaterialItem({name}: MaterialItemProps) {
          inline-block
          border
          border-dashed
+         rounded-sm
          border-black
          m-2.5
          py-2

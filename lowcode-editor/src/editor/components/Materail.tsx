@@ -11,7 +11,7 @@ export default function Materail() {
   },[componentConfig]);
 
   return (
-    <div>{
+    <div className='p-4 flex justify-between'>{
       components.map((component, index)=>{
         return <MaterialItem name={component.name} key={component.name + index}/>
       })

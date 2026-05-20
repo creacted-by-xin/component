@@ -8,8 +8,6 @@ export default function ComponentAttr() {
   const { curComponentId, curComponent, components, updateComponentProps } = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
 
-
-
   const [form] = Form.useForm();
 
   useEffect(()=> {
@@ -25,16 +23,15 @@ export default function ComponentAttr() {
     };
 
     if( type === 'input' ) {
-      console.log(curComponent.props?.text)
       return <Input/>
     };
   };
 
-  function formValueChange(changeValues) {
-    updateComponentProps(curComponentId, changeValues);
+  function formValueChange(changeValues: Record<string, any>) {
+    if( curComponentId ) {
+      updateComponentProps(curComponentId, changeValues);
+    }
   };
-
-   if (!curComponentId || !curComponent) return null;
 
   return (
     <div className='p-4'>
@@ -46,20 +43,20 @@ export default function ComponentAttr() {
         wrapperCol={{ span: 18 }}
       >
         <Form.Item label="组件ID" >
-          <Input value={curComponent.id} disabled />
+          <Input value={curComponent?.id} disabled />
         </Form.Item>
 
         <Form.Item label="组件名称">
-          <Input value={curComponent.name} disabled />
+          <Input value={curComponent?.name} disabled />
         </Form.Item>
 
         <Form.Item label="组件描述">
-          <Input value={curComponent.desc} disabled />
+          <Input value={curComponent?.desc} disabled />
         </Form.Item>
 
         {/* 组件属性 */}
         {
-          componentConfig[curComponent.name]?.setter?.map(setter => (
+          componentConfig[curComponent?.name!]?.setter?.map(setter => (
             <Form.Item key={setter.name} name={setter.name} label={setter.label}>
               {renderFormElement(setter)}
             </Form.Item>

@@ -131,7 +131,7 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
             }}
         >
             <Space>
-                {parentComponents.length &&
+                {parentComponents.length>0  &&
                     <Dropdown
                         menu={{
                             items: parentComponents.map(item => ({

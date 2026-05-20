@@ -2,7 +2,7 @@ import { useRef, useEffect} from "react";
 import {type CommonComponentProps } from "../../interface";
 import {useMamerialDrop} from '../../hooks/useMamerialDrop';
 
-export default function Container({id, name, children}: CommonComponentProps) {
+export default function Container({id, name, children, style}: CommonComponentProps) {
   const ref = useRef(null);
   
     const{ canDrop, drop }=useMamerialDrop(id, ['Button', 'Container']);
@@ -14,8 +14,8 @@ export default function Container({id, name, children}: CommonComponentProps) {
     // 业务数据id，用自定义ID
     <div  data-component-id={id} 
     ref={ref} 
-    className=" border border-balck min-h-25 p-5"
-    style={{ border: canDrop? '2px solid blue': ''}}
+    className={`border min-h-25 p-5 ${canDrop? 'border-[2px] border-blue-700': ''} `}
+    style={style}
     >{children}</div>
   )
 }
