@@ -23,7 +23,7 @@ interface State {
 interface Action {
     addComponent: (component: ComponentType, parentId: number) => void,
     deleteComponent: (componentId: number) => void,
-    updateComponentStyles: (componentId: number, style: CSSProperties) => void,
+    updateComponentStyles: (componentId: number, style: CSSProperties, replace?: boolean) => void,
     updateComponentProps: (componentId: number, props: any) => void,
     setCurComponentId: (componentId: number | null) => void
 };
@@ -110,13 +110,13 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
             return ({ components: [...state.components] })
         })
     ),
-    updateComponentStyles: (componentId: number, style: CSSProperties) => {
+    updateComponentStyles: (componentId: number, style: CSSProperties, replace: boolean = false) => {
         set((state) => {
             // 找到组件
             const component = getComponentsById(componentId, state.components);
             // 如果组件存在，合并属性
             if (component) {
-                component.style = { ...component.style, ...style };
+                component.style = replace? {...style }: { ...component.style, ...style };
             };
             // 如果不存在，返回原状态
             return ({ components: [...state.components] })

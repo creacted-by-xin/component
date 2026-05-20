@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useLayoutEffect, useState, useMemo } from "react"
 import { createPortal } from "react-dom";
 import { getComponentsById, useComponentsStore } from "../../stores/components";
 import { Space, Popconfirm, Dropdown } from "antd";
@@ -22,8 +22,10 @@ function HoverMask({ portalWrapperClassName, containerClassName, componentId }: 
         labelLeft: 0
     });
 
-    useEffect(() => {
-        updatePositon();
+    useLayoutEffect(() => {
+        //  components变了，到渲染完成，然后再 getBoundingClientRect 拿到改变后的宽高是有一段时间的。
+        // components新值还没渲染，就拿到getBoundingClientRect了
+        setTimeout(()=>{updatePositon()}, 200)
     }, [componentId, components]);
 
     useEffect(()=>{
