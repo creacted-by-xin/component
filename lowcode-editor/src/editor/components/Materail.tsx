@@ -4,15 +4,15 @@ import MaterialItem from "./MaterialItem";
 
 
 export default function Materail() {
-  const {componentConfig} = useComponentConfigStore();
+  const {componentsConfig} = useComponentConfigStore();
 
   const components = useMemo(()=>{
-    return Object.values(componentConfig).filter(item=> item.name !== 'Page');
-  },[componentConfig]);
+    return Object.values(componentsConfig).filter((item: Record<string, any>)=> item.name !== 'Page');
+  },[componentsConfig]);
 
   return (
     <div className='p-4 flex justify-between'>{
-      components.map((component, index)=>{
+      components.map((component: Record<string, any>, index)=>{
         return <MaterialItem name={component.name} key={component.name + index}/>
       })
       }</div>

@@ -1,5 +1,8 @@
-import MonacoEditor, { type OnMount, type EditorProps } from "@monaco-editor/react";
-import { editor } from "monaco-editor";
+import MonacoEditor, { loader, type OnMount, type EditorProps } from "@monaco-editor/react";
+import * as monaco from "monaco-editor";
+import type { editor } from "monaco-editor";
+
+loader.config({ monaco });
 
 interface CssEditorProps {
   value: string,

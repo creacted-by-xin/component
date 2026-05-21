@@ -1,7 +1,8 @@
-import { Form, Input, Select, InputNumber } from 'antd';
+import { Form, Input, Select, InputNumber, Space } from 'antd';
 import { useComponentConfigStore } from '../../stores/component-config';
 import { useComponentsStore } from '../../stores/components';
-import { type ComponentSettingType } from '../../stores/component-config';
+// import { type ComponentSettingType } from '../../stores/component-config';
+import { type setterConfig } from '../../interface';
 import { useEffect, useState, type CSSProperties } from 'react';
 import CssEditor from './CssEditor';
 import { debounce } from 'lodash-es';
@@ -10,7 +11,7 @@ import { LineHeightOutlined } from '@ant-design/icons';
 
 export default function ComponentStyle() {
   const { curComponentId, curComponent, updateComponentStyles } = useComponentsStore();
-  const { componentConfig } = useComponentConfigStore();
+  const { componentsConfig } = useComponentConfigStore();
   const [css, setCss] = useState<string>(`.comp{\n\n}`)
 
   const [form] = Form.useForm();
@@ -25,12 +26,12 @@ export default function ComponentStyle() {
   // style{}对象，转css编码形式
   function toCssStr(css: Record<string, any>) {
     let str = `.comp {\n`;
-    for(let key in css) {
+    for (let key in css) {
       let value = css[key];
-      if(!value) {
+      if (!value) {
         continue;
       }
-      if(['width', 'height'].includes(key) && !value.toString().endsWith('px')){
+      if (['width', 'height'].includes(key) && !value.toString().endsWith('px')) {
         value += 'px';
       };
 
@@ -46,27 +47,39 @@ export default function ComponentStyle() {
 
     const cssStr = value.replace(/\.comp\s*\{/, '').replace('}', '').replace(/\/\*[\s\S]*?\*\//g, '')
 
-    try{
-      StyleToObject(cssStr,(name, value)=> {
-      css[name.replace(/-\w/,(item)=> item.toUpperCase().replace('-', ''))] = value;
-      console.log('css1',css)
-    })
-    }catch(e) {}
+    try {
+      StyleToObject(cssStr, (name, value) => {
+        css[name.replace(/-\w/, (item) => item.toUpperCase().replace('-', ''))] = value;
+        console.log('css1', css)
+      })
+    } catch (e) { }
 
-      return css
+    return css
   }
 
-  function renderFormElement(setter: ComponentSettingType) {
+  function renderFormElement(setter: setterConfig) {
     const { type, options, name } = setter;
 
     if (type === 'select') {
       return <Select options={options} />
-    } else if (type === 'input' ) {
+    } else if (type === 'input') {
       return <Input />
-    } 
+    }
     else if (type === 'inputNumber') {
-      return <InputNumber
-      addonAfter={['width', 'height'].includes(name) ? 'px' : undefined}/>
+      if (['width', 'height'].includes(name)) {
+        return (
+          <Space.Compact className="w-full">
+            <Form.Item name={name} noStyle>
+              <InputNumber className="w-full" />
+            </Form.Item>
+            <span className="inline-flex items-center border border-l-0 border-[#d9d9d9] px-2 text-[#666] rounded-r-md">
+              px
+            </span>
+          </Space.Compact>
+        )
+      }
+
+      return <InputNumber className="w-full" />
     }
 
   };
@@ -83,24 +96,29 @@ export default function ComponentStyle() {
     }
   };
 
-  const handleChange = (value)=>{
+  const handleChange = (value) => {
     setCss(value);
     const css = toCssObj(value);
 
-    updateComponentStyles(curComponentId, {...css}, true)
-    try{
-      if(css.width?.includes('px')) {
-      css.width = css.width.replace('px','');}else(css.width = '')
-      if(css.height?.includes('px')) {
-      css.height = css.height.replace('px','');}else(css.height = '')
-    }catch(e) {};
+    updateComponentStyles(curComponentId, { ...css }, true)
+    try {
+      if (css.width?.includes('px')) {
+        css.width = css.width.replace('px', '');
+      } else (css.width = '')
+      if (css.height?.includes('px')) {
+        css.height = css.height.replace('px', '');
+      } else (css.height = '')
+    } catch (e) { };
 
-    form.setFieldsValue({...form.getFieldsValue() , ...css});
+    form.setFieldsValue({ ...form.getFieldsValue(), ...css });
   }
 
+  // if(componentsConfig[curComponent?.name!]?.stylesSetters) return;
+
+
   return (
-    <div  className='mt-4'>
-      <Form 
+    <div className='mt-4'>
+      <Form
         form={form}
         onValuesChange={formValueChange}
         name="componentStyle"
@@ -108,17 +126,15 @@ export default function ComponentStyle() {
         wrapperCol={{ span: 18 }}
       >
         {/* 样式属性 */}
-        {
-          componentConfig[curComponent?.name!]?.styleSetter?.map(setter => (
-            <Form.Item key={setter.name} name={setter.name} label={setter.label}>
-              {renderFormElement(setter)}
-            </Form.Item>
-          ))
-        }
+        {componentsConfig[curComponent?.name!]?.stylesSetters?.map(setter => (
+          <Form.Item key={setter.name} label={setter.label}>
+            {renderFormElement(setter)}
+          </Form.Item>
+        ))}
 
       </Form>
       <div className='h-50  border border-[#ccc]'>
-        <CssEditor value={css} onChange={handleChange}/>
+        <CssEditor value={css} onChange={handleChange} />
       </div>
     </div>
   )

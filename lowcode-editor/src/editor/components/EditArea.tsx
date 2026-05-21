@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type MouseEventHandler } from "react";
+import React, { useState, type MouseEventHandler } from "react";
 import { useComponentsStore, type ComponentType } from "../stores/components";
 import { useComponentConfigStore } from "../stores/component-config";
 import HoverMask from "./HoverMask";
@@ -7,7 +7,7 @@ import SelectedMask from "./SelectedMask"
 
 export default function EditArea() {
   const { components, curComponentId, setCurComponentId} = useComponentsStore();
-  const { componentConfig } = useComponentConfigStore();
+  const { componentsConfig } = useComponentConfigStore();
 
   // useEffect(() => {
   //   addComponent({
@@ -32,7 +32,7 @@ export default function EditArea() {
   function renderCommponents(components: ComponentType[]): React.ReactNode{
     return components.map((component: ComponentType)=>{
       // 拿到对应的配置对象
-      const config = componentConfig?.[component.name];
+      const config = componentsConfig?.[component.name];
 
       // 配置对象是否配置了该组件
       // 没配置

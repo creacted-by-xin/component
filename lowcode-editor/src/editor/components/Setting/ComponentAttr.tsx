@@ -1,12 +1,13 @@
 import { Form, Input, Select } from 'antd';
 import { useComponentConfigStore } from '../../stores/component-config';
 import { useComponentsStore } from '../../stores/components';
-import { type ComponentSettingType } from '../../stores/component-config';
+// import { type ComponentSettingType } from '../../stores/component-config';
+import {type setterConfig } from '../../interface';
 import { useEffect } from 'react';
 
 export default function ComponentAttr() {
-  const { curComponentId, curComponent, components, updateComponentProps } = useComponentsStore();
-  const { componentConfig } = useComponentConfigStore();
+  const { curComponentId, curComponent, updateComponentProps } = useComponentsStore();
+  const { componentsConfig } = useComponentConfigStore();
 
   const [form] = Form.useForm();
 
@@ -15,7 +16,12 @@ export default function ComponentAttr() {
     form.setFieldsValue({...formValue, ...curComponent?.props})
   },[curComponent]);
 
-  function renderFormElement(setter: ComponentSettingType) {
+   console.log('curComponent', curComponent)
+  console.log('curComponent?.name!', curComponent?.name!)
+  console.log('componentsConfig[curComponent?.name!]', componentsConfig)
+  console.log('componentsConfig[curComponent?.name!]', componentsConfig?.[curComponent?.name!])
+
+  function renderFormElement(setter: setterConfig) {
     const { type, options } = setter;
 
     if( type === 'select' ) {
@@ -56,7 +62,7 @@ export default function ComponentAttr() {
 
         {/* 组件属性 */}
         {
-          componentConfig[curComponent?.name!]?.setter?.map(setter => (
+          componentsConfig[curComponent?.name!]?.setter?.map(setter => (
             <Form.Item key={setter.name} name={setter.name} label={setter.label}>
               {renderFormElement(setter)}
             </Form.Item>

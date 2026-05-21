@@ -2,46 +2,56 @@ import { create } from "zustand";
 import Container from "../materials/Container";
 import Button from "../materials/Button";
 import Page from "../materials/Page";
+import {type ComponentConfigMap } from "../interface";
 
 
-export interface ComponentSettingType {
-    // 字段名
-    name: string,
-    // 前面的文字标签
-    label: string,
-    // 属性类型
-    type: string,
-    // 属性值
-    [key: string]: any
+// export interface ComponentSettingType {
+    // // 字段名
+    // name: string,
+    // // 前面的文字标签
+    // label: string,
+    // // 属性类型
+    // type: string,
+    // // 属性值
+    // [key: string]: any
+// };
+
+
+// interface ComponentConfigType {
+//     name: string,
+//     desc: string,
+//     // 组件默认属性
+//     defaultProps: Record<string, any>,
+//     // 组件可设置属性
+//     setter?: ComponentSettingType[],
+//     styleSetter?: ComponentSettingType[],
+//     // 对应哪个组件
+//     component: any
+// };
+
+// 仓库类型
+interface StateType {
+    componentsConfig:  any
 };
 
-interface ComponentConfigType {
-    name: string,
-    desc: string,
-    // 组件默认属性
-    defaultProps: Record<string, any>,
-    // 组件可设置属性
-    setter?: ComponentSettingType[],
-    styleSetter?: ComponentSettingType[],
-    // 对应哪个组件
-    component: any
+// 仓库方法类型
+interface ActionType {
+    // registerComponent: < T extends keyof ComponentConfigMap>(name: T, componentConfig: ComponentConfigMap[T]) => void
 };
 
-interface State {
-    componentConfig: { [key: string]: ComponentConfigType }
-};
-
-interface Action {
-    registerComponent: (name: string, componentConfig: ComponentConfigType) => void
-};
-
-export const useComponentConfigStore = create<State & Action>((set) => ({
-    componentConfig: {
+const componentsConfig: ComponentConfigMap= {
         Page: {
             name: 'Page',
             desc: '页面',
-            defaultProps: {},
-            styleSetter: [
+            type: 'page',
+            component: Page,
+            stylesSetters: []
+        },
+        Container: {
+            name: 'Container',
+            desc: '容器',
+            type: 'container',
+            stylesSetters: [
                 {
                     name: 'height',
                     label: '高度',
@@ -53,22 +63,17 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                     type: 'inputNumber',
                 }
             ],
-            component: Page
-        },
-        Container: {
-            name: 'Container',
-            desc: '容器',
-            defaultProps: {},
             component: Container
         },
         Button: {
             name: 'Button',
             desc: '按钮',
+            type: 'button',
             defaultProps: {
                 type: 'primary',
                 text: '按钮'
             },
-            setter: [
+            proptiesSetters: [
                 {
                     name: 'type',
                     label: '按钮类型',
@@ -84,7 +89,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
                     type: 'input',
                 }
             ],
-            styleSetter: [
+            stylesSetters: [
                 {
                     name: 'height',
                     label: '高度',
@@ -98,14 +103,18 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
             ],
             component: Button
         },
-    },
-    registerComponent: (name, componentConfig) => set((state) => {
-        return {
-            ...state,
-            componentConfig: {
-                ...state.componentConfig,
-                [name]: componentConfig
-            }
-        }
-    })
+    };
+
+export const useComponentConfigStore = create<StateType & ActionType>((set) => ({
+    componentsConfig: componentsConfig,
+    // registerComponent: (name, componentConfig) => set((state) => {
+    //     return {
+    //         ...state,
+    //         // 覆盖原配置对象  {componentsConfig: {}}
+    //         componentsConfig: {
+    //             ...state.componentsConfig,
+    //             [name]: componentConfig
+    //         }
+    //     }
+    // })
 }))

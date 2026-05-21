@@ -4,7 +4,7 @@ import { useComponentConfigStore } from "../stores/component-config";
 
 export function useMamerialDrop(parentId: number, accept: string[]) {
     const {addComponent} = useComponentsStore();
-    const {componentConfig} = useComponentConfigStore();
+    const {componentsConfig} = useComponentConfigStore();
 
     const [{ canDrop },drop] = useDrop(()=>({
         accept: accept,
@@ -14,7 +14,7 @@ export function useMamerialDrop(parentId: number, accept: string[]) {
                   return;
                 };
                 
-          const config = componentConfig[item.type];
+          const config = componentsConfig[item.type];
 
           addComponent({
             id: new Date().getTime(),
