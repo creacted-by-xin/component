@@ -13,12 +13,15 @@ export default function Preview() {
 
     componentsConfig[component.name].events?.forEach( event => {
       const eventConfig = component.props[event.name];
+      console.log('eventConfig---', eventConfig);
 
       if(eventConfig) {
         const { type } = eventConfig;
 
+
         props[event.name] = ()=> {
           if(type === 'jumpLink' && eventConfig.url) {
+            console.log('111')
             window.location.href = eventConfig.url
           } else if(type === 'showMessage' && eventConfig.config) {
             if(eventConfig.config.type === 'success') {
@@ -30,6 +33,7 @@ export default function Preview() {
         }
       }
     });
+    console.log('拿到props---', props);
     return props;
   };
 

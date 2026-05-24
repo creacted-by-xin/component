@@ -21,7 +21,7 @@ export default function ActionModal({ visible, handleOk, handleCancel }: ActionM
             open={visible}
             okText="增加"
             cancelText="取消"
-            onOk={()=>handleOk(curConfig)}
+            onOk={()=>{ handleOk(curConfig);}}
             onCancel={handleCancel}
         >
             <div className='h-80'>

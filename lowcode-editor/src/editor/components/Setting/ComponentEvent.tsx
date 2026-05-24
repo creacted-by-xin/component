@@ -1,7 +1,7 @@
 import { Collapse, type  CollapseProps, Button} from 'antd';
 import { useComponentsStore } from '../../stores/components';
 import { useComponentConfigStore } from '../../stores/component-config';
-import {act, useState} from 'react';
+import { useState} from 'react';
 import ActionModal from './ActionModal';
 import { type JumpLinkConfig } from './action/JumpLink';
 import { type ShowMessageConfig } from './action/ShowMessage';
@@ -13,7 +13,6 @@ export default function ComponentEvent() {
   const [curEvent, setCurEvent] = useState(null);
 
   if(!curComponent) return null;
-  console.log(componentsConfig?.[curComponent.name]?.events, 'events---');
   const items: CollapseProps['items'] = componentsConfig?.[curComponent.name]?.events?.map(event=>({
     key: event.name,
     label: <div className='flex justify-between items-center'>
@@ -33,13 +32,13 @@ export default function ComponentEvent() {
     updateComponentProps(curComponentId, {
       ...curComponent.props,
       [curEvent.name]: {
-        action: [
           ...curComponent.props[curEvent.name]?.action || [],
-          config
-        ]
+          ...config
       }
     })
-  }
+  };
+
+
 
   return (
     <div className="mt-2 px-2.5 ">
