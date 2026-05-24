@@ -62,7 +62,7 @@ export default function ComponentAttr() {
 
         {/* 组件属性 */}
         {
-          componentsConfig[curComponent?.name!]?.setter?.map(setter => (
+          componentsConfig[curComponent?.name!]?.proptiesSetters?.map(setter => (
             <Form.Item key={setter.name} name={setter.name} label={setter.label}>
               {renderFormElement(setter)}
             </Form.Item>

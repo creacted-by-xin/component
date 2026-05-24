@@ -5,13 +5,18 @@ import MaterialWrapper from "./components/MaterialWrapper";
 import EditArea from "./components/EditArea";
 import Setting from "./components/Setting";
 import './index.css'
+import { useComponentsStore } from "./stores/components";
+import Preview from "./components/Preview";
 
 export default function ReactPlayground() {
+    const{ mode } = useComponentsStore();
+
     return <div className=' h-screen flex flex-col'>
         <div className='h-15 flex items-center border-b border-black'>
            <Header/>
         </div>
-        <Allotment >
+        {mode === 'edit'? 
+            <Allotment >
             <Allotment.Pane preferredSize={240} maxSize={300} minSize={200}>
                 <MaterialWrapper/>
             </Allotment.Pane>
@@ -22,5 +27,6 @@ export default function ReactPlayground() {
                 <Setting/>
             </Allotment.Pane>
         </Allotment>
+        : <Preview/>}
     </div>
 }

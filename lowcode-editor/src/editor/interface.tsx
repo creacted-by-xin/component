@@ -17,16 +17,6 @@ export interface CommonComponentProps extends PropsWithChildren {
  */
 // 
 // 基础配置（必配）
-interface BaseConfigType {
-    name: string,
-    desc: string,
-    component: any,
-    defaultProps?:  Record<string, any>,
-    stylesSetters?: setterConfig[],
-};
-
-// 公共配置
-// 属性设置配置项（可选）
 export interface setterConfig {
     // 字段名
     name: string,
@@ -37,7 +27,23 @@ export interface setterConfig {
     // 属性值
     [key: string]: any
 };
+export interface ComponentEvent {
+        name: string,
+        label: string
+};
 
+interface BaseConfigType {
+    name: string,
+    desc: string,
+    dev: any,
+    prod: any
+    defaultProps?:  Record<string, any>,
+    stylesSetters?: setterConfig[],
+    events?: ComponentEvent[]
+};
+
+// 公共配置
+// 属性设置配置项（可选）
 type WidthSetterConfig = {
   name: 'width';
   label: string;
@@ -50,24 +56,25 @@ type HeightSetterConfig = {
   type: 'inputNumber';
 };
 
-type RequiredSizeSetters = [
-  HeightSetterConfig,
-  WidthSetterConfig,
-  ...setterConfig[]
-];
+type OnClickEventConfig = {
+  name: 'onClick';
+  label: string;
+};
 
+type OnDoubleEventConfig = {
+  name: 'onDoubleClick';
+  label: string;
+};
 
 // 组件配置
 interface PageConfig extends BaseConfigType {
     type: 'page',
-    
-    // 私有属性
 };
 
 interface ContainerConfig extends BaseConfigType {
     // 私有属性
     type: 'container',
-    stylesSetters?: RequiredSizeSetters
+    stylesSetters: [WidthSetterConfig, HeightSetterConfig, ...setterConfig[]],
     proptiesSetters?: setterConfig[],
 };
 
@@ -76,6 +83,7 @@ interface ButtonConfig extends BaseConfigType {
     type: 'button',
     stylesSetters?: setterConfig[],
     proptiesSetters?: setterConfig[],
+    events: [OnClickEventConfig, OnDoubleEventConfig, ...ComponentEvent[]]
 };
 
 // 类型匹配

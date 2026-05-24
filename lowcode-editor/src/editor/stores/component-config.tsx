@@ -1,7 +1,10 @@
 import { create } from "zustand";
-import Container from "../materials/Container";
-import Button from "../materials/Button";
-import Page from "../materials/Page";
+import ContainerDev from "../materials/Container/dev";
+import ContainerProd from "../materials/Container/prod";
+import ButtonDev from "../materials/Button/dev";
+import ButtonProd from "../materials/Button/prod";
+import PageDev from "../materials/Page/dev";
+import PageProd from "../materials/Page/prod";
 import {type ComponentConfigMap } from "../interface";
 
 
@@ -44,31 +47,35 @@ const componentsConfig: ComponentConfigMap= {
             name: 'Page',
             desc: '页面',
             type: 'page',
-            component: Page,
+            dev: PageDev,
+            prod: PageProd,
             stylesSetters: []
         },
         Container: {
             name: 'Container',
             desc: '容器',
             type: 'container',
+            dev: ContainerDev,
+            prod: ContainerProd,
             stylesSetters: [
-                {
-                    name: 'height',
-                    label: '高度',
-                    type: 'inputNumber',
-                },
                 {
                     name: 'width',
                     label: '宽度',
                     type: 'inputNumber',
+                },
+                {
+                    name: 'height',
+                    label: '高度',
+                    type: 'inputNumber',
                 }
             ],
-            component: Container
         },
         Button: {
             name: 'Button',
             desc: '按钮',
             type: 'button',
+            dev: ButtonDev,
+            prod: ButtonProd,
             defaultProps: {
                 type: 'primary',
                 text: '按钮'
@@ -101,7 +108,16 @@ const componentsConfig: ComponentConfigMap= {
                     type: 'inputNumber',
                 }
             ],
-            component: Button
+            events: [
+                {
+                    name: 'onClick',
+                    label: '点击事件',
+                },
+                {
+                    name: 'onDoubleClick',
+                    label: '双击事件',
+                }
+            ]
         },
     };
 

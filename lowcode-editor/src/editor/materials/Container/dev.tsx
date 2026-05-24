@@ -14,7 +14,7 @@ export default function Container({id, name, children, style}: CommonComponentPr
     // 业务数据id，用自定义ID
     <div  data-component-id={id} 
     ref={ref} 
-    className={`border min-h-25 p-5 ${canDrop? 'border-[2px] border-blue-700': ''} `}
+    className={`border min-h-25 p-5 ${canDrop? 'border-2 border-blue-700': ''} `}
     style={style}
     >{children}</div>
   )

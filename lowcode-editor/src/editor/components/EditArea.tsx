@@ -9,26 +9,6 @@ export default function EditArea() {
   const { components, curComponentId, setCurComponentId} = useComponentsStore();
   const { componentsConfig } = useComponentConfigStore();
 
-  // useEffect(() => {
-  //   addComponent({
-  //     id: 444,
-  //     name: 'Container',
-  //     desc: '容器',
-  //     props: {},
-  //     children: [],
-  //   }, 1);
-
-  //   addComponent({
-  //     id: 555,
-  //     name: 'Button',
-  //     desc: '按钮',
-  //     props: {
-  //        text: '无敌'
-  //     },
-  //     children: [],
-  //   }, 444);
-  // }, []);
-
   function renderCommponents(components: ComponentType[]): React.ReactNode{
     return components.map((component: ComponentType)=>{
       // 拿到对应的配置对象
@@ -36,9 +16,9 @@ export default function EditArea() {
 
       // 配置对象是否配置了该组件
       // 没配置
-      if(!config?.component) return null;
+      if(!config?.dev) return null;
       // 配置了
-      return React.createElement(config.component, 
+      return React.createElement(config.dev, 
         {
           key: component.id,
           id: component.id,

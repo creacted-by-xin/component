@@ -1,6 +1,13 @@
 import type { CSSProperties } from 'react';
 import { create } from 'zustand';
 
+export interface ComponentEventAction {
+    type?: 'showMessage',
+    message?: string
+}
+
+export type ComponentEventMap = Record<string, ComponentEventAction>;
+
 //组件类型
 export interface ComponentType {
     id: number,
@@ -8,6 +15,7 @@ export interface ComponentType {
     desc: string,
     style?: CSSProperties,
     props: Record<string, any>,
+    events?: ComponentEventMap,
     children?: ComponentType[],
     parentId?: number
 };
@@ -15,6 +23,7 @@ export interface ComponentType {
 // 仓库数据类型
 interface State {
     components: ComponentType[],
+    mode: 'edit' | 'preview',
     curComponentId?: number | null,
     curComponent?: ComponentType | null
 };
@@ -25,7 +34,9 @@ interface Action {
     deleteComponent: (componentId: number) => void,
     updateComponentStyles: (componentId: number, style: CSSProperties, replace?: boolean) => void,
     updateComponentProps: (componentId: number, props: any) => void,
-    setCurComponentId: (componentId: number | null) => void
+    updateComponentEvents: (componentId: number, events: ComponentEventMap) => void,
+    setCurComponentId: (componentId: number | null) => void,
+    setMode: (mode: State['mode']) => void,
 };
 
 // 创建仓库啦～
@@ -34,20 +45,11 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         id: 1,
         name: 'Page',
         desc: '页面',
-        props: {},
-        children: [
-            {
-                id: 2,
-                name: 'Button',
-                desc: '按钮',
-                props: { text: '你好', type: 'primary' },
-                children: [],
-                parentId: 1
-            }
-        ]
-    }
+        props: {},} 
     ],
+    mode: 'edit',
     curComponentId: null,
+    curComponent: null,
     addComponent: (component: ComponentType, parentId: number) => {
         set((state) => {
             // 如果存在父组件，增加到父组件的children下
@@ -122,10 +124,20 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
             return ({ components: [...state.components] })
         })
     },
+    updateComponentEvents: (componentId: number, events: ComponentEventMap) => {
+        set((state) => {
+            const component = getComponentsById(componentId, state.components);
+            if (component) {
+                component.events = events;
+            }
+            return ({ components: [...state.components] })
+        })
+    },
     setCurComponentId: (componentId: number | null) => set(state => ({
         curComponentId: componentId,
         curComponent: getComponentsById(componentId, state.components)
-    }))
+    })),
+    setMode: (mode) => set({mode})
 }));
 
 //根据ID找到组件

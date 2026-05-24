@@ -7,6 +7,5 @@ export default function Button({id, type, text, style}: CommonComponentProps) {
     <AndtButton data-component-id={id} type={type} style={style}>
       {text}
     </AndtButton>
-    // <div>{type}+{text}</div>
   )
 }
