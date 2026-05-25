@@ -49,7 +49,7 @@ export default function ShowMessage(props: ShowMessageProps) {
         })
     }
 
-    return <div className='mt-2'>
+    return <div className='mt-4'>
         <div className='flex items-center '>
             <div>类型：</div>
             <Select
@@ -62,7 +62,7 @@ export default function ShowMessage(props: ShowMessageProps) {
                 onChange={value => messageTypeChange(value)}
             />
         </div>
-        <div  className='flex items-center mt-2'>
+        <div  className='flex items-center mt-4'>
             <div  className="shrink-0 whitespace-nowrap" >文本：</div>
             <Input
                 value={text}
