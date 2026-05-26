@@ -15,17 +15,18 @@ export interface JumpLinkProps {
 export default function JumpLink(props: JumpLinkProps) {
   const { defaultValue, onChange } = props;
   const { curComponentId } = useComponentsStore();
-  const [ values, setvalue] = useState(defaultValue);
+  const [ values, setvalue] = useState(defaultValue || '');
 
   function urlChange(value: string) {
     if(!curComponentId) return;
 
     setvalue(value);
 
+    // 本次配置
     onChange?.({
       type: 'jumpLink',
       url: value
-    })
+    });
   }
 
     return (

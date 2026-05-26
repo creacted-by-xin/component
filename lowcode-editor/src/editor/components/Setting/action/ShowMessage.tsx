@@ -5,7 +5,7 @@ import { useComponentsStore } from '../../../stores/components';
 export interface ShowMessageConfig {
     type: 'showMessage',
     config: {
-        type: 'success' | 'error',
+        type: 'success' | 'error' ,
         text: string
     }
 };
@@ -19,7 +19,7 @@ export default function ShowMessage(props: ShowMessageProps) {
     const { defaultValue, onChange } = props;
     const { curComponentId } = useComponentsStore();
 
-    const [type, setType] = useState<'success' | 'error'>(defaultValue?.type || 'success');
+    const [type, setType] = useState<'success' | 'error' >(defaultValue?.type || 'success');
     const [text, setText] = useState<string>(defaultValue?.text || '');
 
     function messageTypeChange(value: 'success' | 'error') {
