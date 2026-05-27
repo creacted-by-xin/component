@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
-.setting-scroll {
-  scrollbar-width: none;
+.setting-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
-.setting-scroll:hover{
-  scrollbar-width: thin;
+
+.setting-scroll:hover::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.setting-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: #caccd0;
+  border-radius: 999px;
 }

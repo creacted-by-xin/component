@@ -1,4 +1,4 @@
-import { Collapse, type CollapseProps, Button, Empty, message, Tooltip } from 'antd';
+import { Collapse, type CollapseProps, Button, Empty } from 'antd';
 import { useComponentsStore } from '../../stores/components';
 import { useComponentConfigStore } from '../../stores/component-config';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ export default function ComponentEvent() {
   const { componentsConfig } = useComponentConfigStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [curEvent, setCurEvent] = useState(null);
+  const [curModal, setCurModal] = useState<string>('');
 
   function handleDelete(event: ComponentEvent, index) {
     if (!curComponent) return;
@@ -28,6 +29,18 @@ export default function ComponentEvent() {
       }
     });
   };
+
+  function handleEdit(type, index) {
+    console.log(type)
+    
+    switch(type){
+      case('jumpLink'): setCurModal('访问链接') ; break;
+      case('showMessage'): setCurModal('消息提示') ; break;
+      
+    };
+
+    setModalVisible(true);
+  }
 
   if (!curComponent) return null;
   const items: CollapseProps['items'] = componentsConfig?.[curComponent.name]?.events?.map(event => ({
@@ -62,14 +75,16 @@ export default function ComponentEvent() {
                       title={action.type === 'jumpLink' ? action.url : `文本-${action.config?.text}`}
                       className='text-orange-400'
                     >
-                      {action.type === 'jumpLink' ? action.url : `文本-${action.config?.text}`}
+                      {action.type === 'jumpLink' ? action.url : `${action.config?.text}`}
                     </EllipsisTooltip>
                   </div>
 
                 </div>
-                <div className='flex gap-1 text-gray-400'>
-                  <EditOutlined className=' **:group-hover:text-red-400 cursor-pointer' />
-                  <DeleteOutlined className=' **:group-hover:text-red-400 cursor-pointer ' 
+                <div className='flex gap-1.5 text-gray-400 cursor-pointer'>
+                  <EditOutlined className='hover:text-red-400 ' 
+                    // onClick={()=> handleEdit(action.type, )}
+                    />
+                  <DeleteOutlined className='hover:text-red-400 ' 
                     onClick={() => handleDelete(event, index)} />
                 </div>
               </div>)
@@ -99,6 +114,7 @@ export default function ComponentEvent() {
     <div className="mt-2 px--2 ">
       <Collapse items={items} defaultActiveKey={componentsConfig?.[curComponent.name]?.events?.map(item => item.name)} />
       <ActionModal
+       curModal={curModal}
         visible={modalVisible}
         handleOk={hendleModalOk}
         handleCancel={() => setModalVisible(false)}

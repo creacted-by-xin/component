@@ -8,33 +8,40 @@ export interface JumpLinkConfig {
 };
 
 export interface JumpLinkProps {
-  defaultValue?: string,
+  value?: string,
   onChange?: (config: JumpLinkConfig) => void
 };
 
 export default function JumpLink(props: JumpLinkProps) {
-  const { defaultValue, onChange } = props;
-  const { curComponentId } = useComponentsStore();
-  const [ values, setvalue] = useState(defaultValue || '');
+  const { value = '', onChange } = props;
+  // const { curComponentId } = useComponentsStore();
+  const [values, setvalue] = useState(value || '');
 
-  function urlChange(value: string) {
-    if(!curComponentId) return;
+  // function urlChange(value: string) {
+  //   if (!curComponentId) return;
 
-    setvalue(value);
+  //   setvalue(value);
 
-    // 本次配置
-    onChange?.({
-      type: 'jumpLink',
-      url: value
-    });
-  }
+  //   // 本次
+  //   onChange?.({
+  //     type: 'jumpLink',
+  //     url: value
+  //   });
+  // }
 
-    return (
-        <div className='flex items-center gap-1 mt-4'>
-            <div className="shrink-0 whitespace-nowrap" >链接地址：</div>
-            <Input value={values || ''}
-            onChange={(e)=> {urlChange(e.target.value)}}
-            />
-        </div>
-    )
+  return (
+    <div className='flex items-center gap-1 mt-4'>
+      <div className="shrink-0 whitespace-nowrap" >链接地址：</div>
+      <Input value={values || ''}
+        onChange={(e) => {
+          setvalue(e.target.value);
+
+          onChange?.({
+            type: 'jumpLink',
+            url: e.target.value
+          });
+        }}
+      />
+    </div>
+  )
 }
