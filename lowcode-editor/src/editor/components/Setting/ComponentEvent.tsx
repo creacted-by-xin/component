@@ -3,8 +3,7 @@ import { useComponentsStore } from '../../stores/components';
 import { useComponentConfigStore } from '../../stores/component-config';
 import { useState } from 'react';
 import ActionModal from './ActionModal';
-import { type JumpLinkConfig } from './action/JumpLink';
-import { type ShowMessageConfig } from './action/ShowMessage';
+import { type ConfigType } from './ActionModal';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import EllipsisTooltip from '../common/EllipsisTooltip';
 import type { ComponentEvent } from '../../interface';
@@ -13,24 +12,24 @@ export default function ComponentEvent() {
   const { curComponentId, curComponent, updateComponentProps } = useComponentsStore();
   const { componentsConfig } = useComponentConfigStore();
   const [modalVisible, setModalVisible] = useState(false);
-  const [curEvent, setCurEvent] = useState(null);
+  const [curEvent, setCurEvent] = useState<ComponentEvent>();
   const [curModal, setCurModal] = useState<string>('');
 
-  function handleDelete(event: ComponentEvent, index) {
+  function handleDelete(event: ComponentEvent, index: number) {
     if (!curComponent) return;
 
     const actions = curComponent.props[event.name]?.actions;
 
     actions.splice(index, 1);
 
-    updateComponentProps(curComponentId, {
+    updateComponentProps(curComponentId!, {
       [event.name]: {
         actions: actions
       }
     });
   };
 
-  function handleEdit(type, index) {
+  function handleEdit(type: string, index: number) {
     console.log(type)
     
     switch(type){
@@ -43,7 +42,7 @@ export default function ComponentEvent() {
   }
 
   if (!curComponent) return null;
-  const items: CollapseProps['items'] = componentsConfig?.[curComponent.name]?.events?.map(event => ({
+  const items: CollapseProps['items'] = componentsConfig?.[curComponent.name]?.events?.map((event: ComponentEvent) => ({
     key: event.name,
     label: <div className='flex justify-between items-center'>
       <div>{event.label}</div>
@@ -59,23 +58,23 @@ export default function ComponentEvent() {
         :
         <div>
           {
-            curComponent?.props?.[event.name]?.actions?.map((action: JumpLinkConfig | ShowMessageConfig, index: number) => {
+            curComponent?.props?.[event.name]?.actions?.map((action: ConfigType, index: number) => {
 
               return (<div className='group flex justify-between items-center mb-2 p-2 border rounded-xl'>
                 <div className='flex flex-col font-bold'>
-                  <div className=''>消息类型：<span className='f text-blue-400'>
-                    {action.type === 'jumpLink' ? '跳转链接' : action.config?.type === 'success' ? '成功提示' : '错误提示'}
+                  <div className=''>类型：<span className='f text-blue-400'>
+                    {action.type === 'jumpLink' ? '跳转链接' : (action.type === 'showMessage' ? (action.config?.type === 'success' ? '成功提示' : '错误提示') :'')}
                   </span></div>
                   <div className='flex flex-1'>
                     <span className='shrink-0'>
-                      {action.type === 'jumpLink' ? '链接：' : '内容：'}
+                      {action.type === 'jumpLink' ? '链接：' : (action.type === 'showMessage' ?'内容：' : '代码：')}
                     </span>
 
                     <EllipsisTooltip
-                      title={action.type === 'jumpLink' ? action.url : `文本-${action.config?.text}`}
+                      title={action.type === 'jumpLink' ? action.url : (action.type === 'showMessage'?`文本-${action.config?.text}`: action.code)}
                       className='text-orange-400'
                     >
-                      {action.type === 'jumpLink' ? action.url : `${action.config?.text}`}
+                      {action.type === 'jumpLink' ? action.url : (action.type === 'showMessage'?`文本-${action.config?.text}`: action.code)}
                     </EllipsisTooltip>
                   </div>
 
@@ -94,12 +93,12 @@ export default function ComponentEvent() {
   }
   ));
   
-  const hendleModalOk = (config?: JumpLinkConfig | ShowMessageConfig) => {
+  const handleModalOk = (config?: ConfigType) => {
     if (!curComponent || !curEvent || !config) return null;
 
     setModalVisible(false);
 
-    updateComponentProps(curComponentId, {
+    updateComponentProps(curComponentId!, {
       ...curComponent.props,
       [curEvent.name]: {
         actions: [
@@ -112,11 +111,11 @@ export default function ComponentEvent() {
 
   return (
     <div className="mt-2 px--2 ">
-      <Collapse items={items} defaultActiveKey={componentsConfig?.[curComponent.name]?.events?.map(item => item.name)} />
+      <Collapse items={items} defaultActiveKey={componentsConfig?.[curComponent.name]?.events?.map((item: ComponentEvent) => item.name)} />
       <ActionModal
        curModal={curModal}
         visible={modalVisible}
-        handleOk={hendleModalOk}
+        handleOk={handleModalOk}
         handleCancel={() => setModalVisible(false)}
       />
     </div>

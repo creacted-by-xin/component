@@ -3,8 +3,8 @@ import { useComponentsStore } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 import { type ComponentType } from "../../stores/components";
 import { message } from "antd";
-import { type JumpLinkConfig } from "../Setting/action/JumpLink";
-import { type ShowMessageConfig } from "../Setting/action/ShowMessage";
+import { type JumpLinkConfig } from "../Setting/actions/JumpLink";
+import { type ShowMessageConfig } from "../Setting/actions/ShowMessage";
 
 export default function Preview() {
   const { components } = useComponentsStore();
