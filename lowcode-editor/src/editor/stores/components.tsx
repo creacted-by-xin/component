@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { create } from 'zustand';
+import { type ComponentConfigMap } from '../interface';
 
 export interface ComponentEventAction {
     type?: 'showMessage',
@@ -11,7 +12,7 @@ export type ComponentEventMap = Record<string, ComponentEventAction>;
 //组件类型
 export interface ComponentType {
     id: number,
-    name: string,
+    name: keyof ComponentConfigMap,
     desc: string,
     style?: CSSProperties,
     props: Record<string, any>,

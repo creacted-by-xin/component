@@ -3,8 +3,9 @@ import { useComponentsStore } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 import { type ComponentType } from "../../stores/components";
 import { message } from "antd";
-import { type JumpLinkConfig } from "../Setting/actions/JumpLink";
-import { type ShowMessageConfig } from "../Setting/actions/ShowMessage";
+import { type ConfigType } from "../Setting/ActionModal";
+import { type ComponentEvent } from "../../interface";
+
 
 export default function Preview() {
   const { components } = useComponentsStore();
@@ -14,7 +15,7 @@ export default function Preview() {
     const props: Record<string, any> = {};
 
     // 拿到组件的配置对象onClick、onMouseEnter等事件
-    componentsConfig[component.name].events?.forEach(event => {
+    componentsConfig[component.name].events?.forEach((event: ComponentEvent) => {
       // 拿到组件配置的事件对应的配置对象
       const eventConfig = component.props[event.name];
       // 如果配置了事件
@@ -24,7 +25,7 @@ export default function Preview() {
         // props[onClick]函数
         console.log('event.name---', event.name); 
         props[event.name] = () => {
-          (eventConfig.actions?.forEach((action: JumpLinkConfig | ShowMessageConfig) => {
+          (eventConfig.actions?.forEach((action:ConfigType) => {
             switch (action.type) {
               case 'jumpLink':
                 if (action.url) {
@@ -39,6 +40,16 @@ export default function Preview() {
                     message.error(`错误：${action.config.text || '请输入错误提示文本'}`);
                   }
                 }
+                break;
+                case 'customJS':
+                  const func = new Function('context', action.code);
+                  func({
+                    name: component.name,
+                    porps: component.name,
+                    showMessage(content: string) {
+                       message.success(content)
+                    }
+                  });
                 break;
             }
           })

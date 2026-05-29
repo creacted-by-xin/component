@@ -2,7 +2,7 @@ import { Segmented } from 'antd';
 import { useState } from 'react';
 import Source from '../Source';
 import Outline from '../Outline';
-import Materail from '../Materail';
+import Materail from '../Material';
 
 export default function MaterialWrapper() {
 

@@ -1,5 +1,5 @@
 import MonacoEditor, { type OnMount } from '@monaco-editor/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface CustomJSConfig {
     type: 'customJS',
@@ -7,15 +7,19 @@ export interface CustomJSConfig {
 };
 
 interface CustomJSProps {
-    defaultvalue?: string,
+    value?: string,
     onChange: (config: CustomJSConfig) => void
 }
 
-export default function CustomJS({ defaultvalue = '', onChange }: CustomJSProps) {
-    const [value, setValue] = useState(defaultvalue);
+export default function CustomJS({ value = '', onChange }: CustomJSProps) {
+    const [code, setCode] = useState(value);
+
+    useEffect(()=> {
+        setCode(value || '')
+    }, [value, onChange])
 
     const codeChange= (value: string | undefined)=> {
-        setValue(value?? '');
+        setCode(value?? '');
 
         onChange?.({
             type: 'customJS',
@@ -39,7 +43,7 @@ export default function CustomJS({ defaultvalue = '', onChange }: CustomJSProps)
             language='javascript'
             onMount={handleEditorMount}
             onChange={codeChange}
-            value={value}
+            value={code}
             options={
                 {
                     fontSize: 14,

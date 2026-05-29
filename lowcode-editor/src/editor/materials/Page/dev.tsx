@@ -4,8 +4,8 @@ import {useMamerialDrop} from '../../hooks/useMamerialDrop';
 
 export default function Page({id, style, name, children}: CommonComponentProps) {
   const ref = useRef(null);
- 
-  const{ canDrop, drop }=useMamerialDrop(id, ['Button', 'Container']);
+  if (!id) return null;
+  const{ canDrop, drop }=useMamerialDrop(id, ['Button', 'Container', 'Modal']);
 
   useEffect(()=> {
           drop(ref)

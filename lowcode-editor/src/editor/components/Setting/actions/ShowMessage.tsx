@@ -1,5 +1,5 @@
 import { Input, Select } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface ShowMessageConfig {
     type: 'showMessage',
@@ -14,39 +14,14 @@ export interface ShowMessageProps {
     onChange?: (config: ShowMessageConfig) => void
 };
 
-export default function ShowMessage(props: ShowMessageProps) {
-    const { value = { type: 'success', text: '' }, onChange } = props;
-    // const { curComponentId } = useComponentsStore();
-
+export default function ShowMessage({ value = { type: 'success', text: '' }, onChange }: ShowMessageProps) {
     const [type, setType] = useState<'success' | 'error'>(value?.type || 'success');
     const [text, setText] = useState<string>(value?.text || '');
 
-    // function messageTypeChange(value: 'success' | 'error') {
-    //     if (!curComponentId) return;
-
-    //     setType(value);
-
-    //     onChange?.({
-    //         type: 'showMessage',
-    //         config: {
-    //             type: value,
-    //             text
-    //         }
-    //     })
-    // };
-
-    // function messageTextChange(value: string) {
-    //     if (!curComponentId) return;
-
-    //     setText(value);
-    //     onChange?.({
-    //         type: 'showMessage',
-    //         config: {
-    //             type,
-    //             text: value
-    //         }
-    //     })
-    // }
+    useEffect(() => {
+        setType(value?.type || 'success');
+        setText(value?.text || '');
+    }, [value]);
 
     return <div className='mt-4'>
         <div className='flex items-center '>

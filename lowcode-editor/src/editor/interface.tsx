@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from "react";
 
 export interface CommonComponentProps extends PropsWithChildren {
-    id: number,
-    name: string,
+    id?: number,
+    name?: string,
     style?: React.CSSProperties,
     [key: string]: any
 };
@@ -66,6 +66,21 @@ type OnDoubleEventConfig = {
   label: string;
 };
 
+type onOkEventConfig = {
+  name: 'onOk';
+  label: string;
+};
+
+type onCancelConfig = {
+  name: 'onCancel';
+  label: string;
+};
+
+type ComponentMethods = {
+  name: string,
+  label: string
+}
+
 // 组件配置
 interface PageConfig extends BaseConfigType {
     type: 'page',
@@ -81,14 +96,25 @@ interface ContainerConfig extends BaseConfigType {
 interface ButtonConfig extends BaseConfigType {
     // 私有属性
     type: 'button',
-    stylesSetters?: setterConfig[],
     proptiesSetters?: setterConfig[],
+    stylesSetters?: setterConfig[],
     events: [OnClickEventConfig, OnDoubleEventConfig, ...ComponentEvent[]]
 };
 
+interface ModalConfig extends BaseConfigType {
+    // 私有属性
+    type: 'modal',
+    proptiesSetters?: setterConfig[],
+    stylesSetters?: setterConfig[],
+    events: [onOkEventConfig, onCancelConfig, ...ComponentEvent[]]
+    methods: ComponentMethods[]
+};
+
+export type Config = PageConfig | ContainerConfig | ButtonConfig | ModalConfig
 // 类型匹配
 export type ComponentConfigMap = {
-  Page: PageConfig;
-  Container: ContainerConfig;
-  Button: ButtonConfig;
+  Page: PageConfig,
+  Container: ContainerConfig,
+  Button: ButtonConfig,
+  Modal: ModalConfig
 };

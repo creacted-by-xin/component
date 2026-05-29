@@ -5,36 +5,13 @@ import ButtonDev from "../materials/Button/dev";
 import ButtonProd from "../materials/Button/prod";
 import PageDev from "../materials/Page/dev";
 import PageProd from "../materials/Page/prod";
+import ModalDev from "../materials/Modal/dev";
+import ModalProd from "../materials/Modal/prod";
 import {type ComponentConfigMap } from "../interface";
 
-
-// export interface ComponentSettingType {
-    // // 字段名
-    // name: string,
-    // // 前面的文字标签
-    // label: string,
-    // // 属性类型
-    // type: string,
-    // // 属性值
-    // [key: string]: any
-// };
-
-
-// interface ComponentConfigType {
-//     name: string,
-//     desc: string,
-//     // 组件默认属性
-//     defaultProps: Record<string, any>,
-//     // 组件可设置属性
-//     setter?: ComponentSettingType[],
-//     styleSetter?: ComponentSettingType[],
-//     // 对应哪个组件
-//     component: any
-// };
-
-// 仓库类型
+// 组件渲染库仓库
 interface StateType {
-    componentsConfig:  any
+    componentsConfig:  ComponentConfigMap
 };
 
 // 仓库方法类型
@@ -119,9 +96,47 @@ const componentsConfig: ComponentConfigMap= {
                 }
             ]
         },
+        Modal: {
+            name: 'Modal',
+            desc: '弹窗',
+            type: 'modal',
+            dev: ModalDev,
+            prod: ModalProd,
+            defaultProps: {
+                title: '弹窗'
+            },
+            proptiesSetters: [
+                {
+                    name: 'title',
+                    label: '弹窗',
+                    type: 'input',
+                }
+            ],
+            stylesSetters: [],
+            events: [
+                {
+                    name: 'onOk',
+                    label: '确认事件',
+                },
+                {
+                    name: 'onCancel',
+                    label: '取消事件',
+                }
+            ],
+            methods: [
+                {
+                    name: 'open',
+                    label: '打开弹窗'
+                },
+                {
+                    name: 'close',
+                    label: '关闭弹窗'
+                },
+            ]
+        }
     };
 
-export const useComponentConfigStore = create<StateType & ActionType>((set) => ({
+export const useComponentConfigStore = create<StateType & ActionType>(() => ({
     componentsConfig: componentsConfig,
     // registerComponent: (name, componentConfig) => set((state) => {
     //     return {
