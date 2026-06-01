@@ -10,7 +10,7 @@ export interface ModalRef {
 };
 
 const Modal: React.ForwardRefRenderFunction<ModalRef, CommonComponentProps> = ({ id, title, children, styles, onOk, onCancel, }, ref)=> {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     useImperativeHandle(ref, ()=> {
         return {

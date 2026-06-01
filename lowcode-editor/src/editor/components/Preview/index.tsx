@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import { useComponentsStore } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 import { type ComponentType } from "../../stores/components";
@@ -10,6 +10,7 @@ import { type ComponentEvent } from "../../interface";
 export default function Preview() {
   const { components } = useComponentsStore();
   const { componentsConfig } = useComponentConfigStore();
+  const componentRefs = useRef<Record<string, any>>({});
 
   function handleEvent(component: ComponentType) {
     const props: Record<string, any> = {};
@@ -21,9 +22,7 @@ export default function Preview() {
       // 如果配置了事件
       if (eventConfig) {
         // 根据事件类型，生成对应的事件处理函数
-        // 目前支持两种事件：访问链接和消息提示
         // props[onClick]函数
-        console.log('event.name---', event.name); 
         props[event.name] = () => {
           (eventConfig.actions?.forEach((action:ConfigType) => {
             switch (action.type) {
@@ -51,6 +50,14 @@ export default function Preview() {
                     }
                   });
                 break;
+                case 'componentMethod':
+                  // 拿到组件实例，调用对应方法
+                  const componentMethods = componentRefs.current[action.config.componentId];
+                   
+                  if(componentMethods) {
+                    componentMethods[action.config.method]?.();
+                  };
+                  break;
             }
           })
           )
@@ -77,6 +84,7 @@ export default function Preview() {
           id: component.id,
           name: component.name,
           style: component.style,
+          ref: (ref: Record<string, any>) => {componentRefs.current[component.id] = ref;},
           ...config.defaultProps,
           // 事件处理函数
           ...component.props,

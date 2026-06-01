@@ -66,19 +66,25 @@ export default function ComponentEvent() {
 
               return (<div className='group flex justify-between items-center mb-2 p-2 border rounded-xl'>
                 <div className='flex flex-col font-bold'>
-                  <div className=''>类型：<span className='f text-blue-400'>
-                    {action.type === 'jumpLink' ? '跳转链接' : (action.type === 'showMessage' ? (action.config?.type === 'success' ? '成功提示' : '错误提示') : '自定义 JS')}
-                  </span></div>
+                  <div className='flex flex-1'>
+                    <span className='shrink-0'>类型：</span>
+                    <EllipsisTooltip
+                      title={action.type === 'jumpLink' ? '跳转链接' : (action.type === 'showMessage' ? (action.config?.type === 'success' ? '成功提示' : '错误提示') : (action.type === 'customJS' ? '自定义 JS' : `${action.config?.componentId}组件方法`))}
+                      className='f text-blue-400'
+                    >
+                      {action.type === 'jumpLink' ? '跳转链接' : (action.type === 'showMessage' ? (action.config?.type === 'success' ? '成功提示' : '错误提示') : (action.type === 'customJS' ? '自定义 JS' : `${action.config?.componentId}组件方法`))}
+                    </EllipsisTooltip>
+                  </div>
                   <div className='flex flex-1'>
                     <span className='shrink-0'>
-                      {action.type === 'jumpLink' ? '链接：' : (action.type === 'showMessage' ? '内容：' : '代码：')}
+                      {action.type === 'jumpLink' ? '链接：' : (action.type === 'showMessage' ? '内容：' : (action.type === 'customJS' ? '代码：' : '方法：'))}
                     </span>
 
                     <EllipsisTooltip
-                      title={action.type === 'jumpLink' ? action.url : (action.type === 'showMessage' ? `${action.config?.text}` : action.code)}
+                      title={action.type === 'jumpLink' ? action.url : (action.type === 'showMessage' ? `${action.config?.text}` : (action.type === 'componentMethod' ? `${action.config?.componentId}` : action.code))}
                       className='text-orange-400'
                     >
-                      {action.type === 'jumpLink' ? action.url : (action.type === 'showMessage' ? `${action.config?.text}` : action.code)}
+                      {action.type === 'jumpLink' ? action.url : (action.type === 'showMessage' ? `${action.config?.text}` : (action.type === 'componentMethod' ? `${action.config?.method === 'open' ? '打开弹窗' : '关闭弹窗'}` : action.code))}
                     </EllipsisTooltip>
                   </div>
 
@@ -104,10 +110,9 @@ export default function ComponentEvent() {
     // 拿到该事件的所有actions
     const oldActions = curComponent.props[curEvent.name]?.actions || [];
     const newActions = [...oldActions]
-    console.log('editingIndex', editingIndex)
 
     // 若是编辑状态
-    if(editingIndex !== undefined){
+    if (editingIndex !== undefined) {
       newActions[editingIndex] = config
     } else {
       newActions.push(config)
@@ -122,14 +127,12 @@ export default function ComponentEvent() {
     });
 
     // 关闭弹窗
-    console.log('关闭弹窗')
-
     setModalVisible(false);
     setEditingIndex(undefined);
     setEditingConfig(undefined);
   };
 
-  function handleCancel(){
+  function handleCancel() {
     setModalVisible(false);
     setEditingIndex(undefined);
     setEditingConfig(undefined);
@@ -141,7 +144,7 @@ export default function ComponentEvent() {
       <ActionModal
         visible={modalVisible}
         value={editingConfig}
-        mode={ editingIndex !== undefined ? 'edit' : 'add'}
+        mode={editingIndex !== undefined ? 'edit' : 'add'}
         handleOk={handleModalOk}
         handleCancel={handleCancel}
       />

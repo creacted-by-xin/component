@@ -16,11 +16,6 @@ export default function ComponentAttr() {
     form.setFieldsValue({...formValue, ...curComponent?.props})
   },[curComponent]);
 
-   console.log('curComponent', curComponent)
-  console.log('curComponent?.name!', curComponent?.name!)
-  console.log('componentsConfig[curComponent?.name!]', componentsConfig)
-  console.log('componentsConfig[curComponent?.name!]', componentsConfig?.[curComponent?.name!])
-
   function renderFormElement(setter: setterConfig) {
     const { type, options } = setter;
 

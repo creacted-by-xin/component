@@ -77,12 +77,14 @@ export default function ActionModal({ visible, value, mode, handleOk, handleCanc
                         value={curConfig?.type === 'showMessage' ? curConfig.config : undefined}
                         onChange={(config) => { setCurConfig(config) }} />}
                 {key === '组件方法' &&
-                    <ComponentMethod key='componentMethod'
-                        />}
+                    <ComponentMethod
+                        key='componentMethod'
+                        value={curConfig?.type === 'componentMethod' ? curConfig.config : undefined}
+                        onChange={(config) => { setCurConfig(config) }} />}
                 {key === '自定义 JS' &&
                     <CustomJS
                         key='customJS'
-                        value={curConfig?.type === 'customJS' ? curConfig.code : ''}
+                        value={curConfig?.type === 'customJS' ? curConfig.code : undefined}
                         onChange={(config) => { setCurConfig(config) }} />}
             </div>
         </Modal>
