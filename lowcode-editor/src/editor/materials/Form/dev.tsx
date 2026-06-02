@@ -25,7 +25,6 @@ const Form = ({ id, name, children, style, onFinish }: CommonComponentProps) => 
     }, []);
 
     const formItems = useMemo(() => {
-        console.log('zengjiaz')
         return (
             React.Children?.map(children, (item: any) => {
                 return ({
@@ -44,7 +43,7 @@ const Form = ({ id, name, children, style, onFinish }: CommonComponentProps) => 
             ref={ref}
             className={`w-full p-5 border min-h-25  ${canDrop ? 'border-2 border-blue-700' : ''} `}
             style={style}>
-            <AntdForm form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+            <AntdForm form={form} labelCol={{ span: 6 }} wrapperCol={{ span: 12 }}>
                 {
                     formItems.map((item: any) => {
                         return (

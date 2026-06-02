@@ -10,9 +10,9 @@ export default function Materail() {
   },[componentsConfig]);
 
   return (
-    <div className='p-4 flex gap-2 flex-wrap'>{
+    <div className='p-4 flex gap-3 flex-wrap'>{
       components.map((component: Record<string, any>, index: number)=>{
-        return <MaterialItem name={component.name} key={component.name + index}/>
+        return <MaterialItem label={component.desc}name={component.name} key={component.name + index}/>
       })
       }</div>
   )

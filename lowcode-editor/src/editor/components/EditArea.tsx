@@ -8,7 +8,7 @@ import SelectedMask from "./SelectedMask"
 export default function EditArea() {
   const { components, curComponentId, setCurComponentId} = useComponentsStore();
   const { componentsConfig } = useComponentConfigStore();
-
+  
   function renderCommponents(components: ComponentType[]): React.ReactNode{
     return components.map((component: ComponentType)=>{
       // 拿到对应的配置对象

@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react"
 import { useDrag } from "react-dnd"
 
 interface MaterialItemProps {
+    label: string,
     name: string
 };
 
-export default function MaterialItem({name}: MaterialItemProps) {
+export default function MaterialItem({label, name}: MaterialItemProps) {
     const ref = useRef(null);
     const [_, drag] = useDrag({
         type: name,
@@ -20,18 +21,18 @@ export default function MaterialItem({name}: MaterialItemProps) {
 
   return (
     <div ref={ref} className=" 
+        font-size-10
          inline-block
          border
          border-dashed
          rounded-sm
          border-black
-         m-2.5
          py-2
          px-2.5
          cursor-move
          bg-white
          select-none
          hover:bg-[#ccc]
-        ">{name}</div>
+        ">{label}</div>
   )
 }
