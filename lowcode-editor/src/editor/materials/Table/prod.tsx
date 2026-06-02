@@ -1,7 +1,9 @@
 import { Table as AntdTable } from 'antd';
-import React, { useMemo, useState } from "react";
-
+import React, { useEffect, useMemo, useState } from "react";
 import { type CommonComponentProps } from "../../interface";
+import { set } from 'lodash-es';
+import axios from 'axios';
+import dayjs from 'dayjs';
 
 const Table = ({ url, children }: CommonComponentProps) => {
     const [loading, setLoading] = useState(false);
@@ -10,6 +12,21 @@ const Table = ({ url, children }: CommonComponentProps) => {
         sex: '女',
         age: 20
     }]);
+
+    const getDate = async () => {
+        if(url) {
+            setLoading(true);
+
+            const { data } = await axios.get(url);
+            setData(data);
+
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getDate();
+    }, []);
 
     const columns = useMemo(() => {
         return React.Children?.map(children, (item: any) => {
