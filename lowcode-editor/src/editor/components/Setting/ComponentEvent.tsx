@@ -137,17 +137,22 @@ export default function ComponentEvent() {
     setEditingIndex(undefined);
     setEditingConfig(undefined);
   };
-
+  
   return (
     <div className="mt-2 px--2 ">
-      <Collapse items={items} defaultActiveKey={componentsConfig?.[curComponent.name]?.events?.map((item: ComponentEvent) => item.name)} />
-      <ActionModal
-        visible={modalVisible}
-        value={editingConfig}
-        mode={editingIndex !== undefined ? 'edit' : 'add'}
-        handleOk={handleModalOk}
-        handleCancel={handleCancel}
-      />
+      {componentsConfig?.[curComponent.name]?.events?.length ? 
+        <>
+          <Collapse items={items} defaultActiveKey={componentsConfig?.[curComponent.name]?.events?.map((item: ComponentEvent) => item.name)} />
+          <ActionModal
+            visible={modalVisible}
+            value={editingConfig}
+            mode={editingIndex !== undefined ? 'edit' : 'add'}
+            handleOk={handleModalOk}
+            handleCancel={handleCancel}
+          /> 
+        </>:<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无事件配置' /> 
+      }
+
     </div>
   )
 }

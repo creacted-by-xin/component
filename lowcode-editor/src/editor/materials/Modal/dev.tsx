@@ -1,14 +1,25 @@
 import { useRef, useEffect } from "react";
 import { type CommonComponentProps } from "../../interface";
 import { useMamerialDrop } from '../../hooks/useMamerialDrop';
+import { useDrag } from 'react-dnd';
 
 export default function Modal({ id, title, children, style }: CommonComponentProps) {
     const ref = useRef(null);
     if (!id) return null;
-    const { canDrop, drop } = useMamerialDrop(id, ['Button', 'Container']);
+    const { canDrop, drop } = useMamerialDrop(id, ['Button', 'Container', 'Modal', 'Table', 'Form']);
+
+    const [, drag] = useDrag(() => ({
+    type: 'Modal',
+    item: {
+      type: 'Modal',
+      id,
+      dragType: 'move'
+    }
+  }));
 
     useEffect(() => {
         drop(ref)
+        drag(ref)
     }, []);
 
     return (

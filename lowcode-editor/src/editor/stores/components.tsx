@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
-import { create } from 'zustand';
+import { create,type StateCreator } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { type ComponentConfigMap } from '../interface';
 
 export interface ComponentEventAction {
@@ -41,7 +42,8 @@ interface Action {
 };
 
 // 创建仓库啦～
-export const useComponentsStore = create<State & Action>((set, get) => ({
+
+const creator: StateCreator<State & Action> = (set, get) => ({
     components: [{
         id: 1,
         name: 'Page',
@@ -139,7 +141,14 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
         curComponent: getComponentsById(componentId, state.components)
     })),
     setMode: (mode) => set({mode})
-}));
+});
+
+// export const useComponentsStore = create<State & Action>(persist(creator, {
+//     name: 'low-code-components',
+// }));
+
+
+export const useComponentsStore = create<State & Action>((creator));
 
 //根据ID找到组件
 export function getComponentsById(id: number | null, components: ComponentType[]): ComponentType | null {

@@ -110,11 +110,45 @@ interface ModalConfig extends BaseConfigType {
     methods: ComponentMethods[]
 };
 
-export type Config = PageConfig | ContainerConfig | ButtonConfig | ModalConfig
+
+interface TableConfig extends BaseConfigType {
+    // 私有属性
+    type: 'table',
+    proptiesSetters?: setterConfig[],
+    stylesSetters?: setterConfig[],
+};
+
+interface TableColumnConfig extends BaseConfigType {
+    // 私有属性
+    type: 'tableColumn',
+    proptiesSetters?: setterConfig[],
+    stylesSetters?: setterConfig[],
+};
+
+interface FormConfig extends BaseConfigType {
+    // 私有属性
+    type: 'form',
+    proptiesSetters?: setterConfig[],
+    stylesSetters?: setterConfig[],
+    methods: ComponentMethods[]
+};
+
+interface FormItemConfig extends BaseConfigType {
+    // 私有属性
+    type: 'formItem',
+    proptiesSetters?: setterConfig[],
+    stylesSetters?: setterConfig[],
+};
+
+export type Config = PageConfig | ContainerConfig | ButtonConfig | ModalConfig | TableConfig | TableColumnConfig | FormConfig | FormItemConfig
 // 类型匹配
 export type ComponentConfigMap = {
   Page: PageConfig,
   Container: ContainerConfig,
   Button: ButtonConfig,
-  Modal: ModalConfig
+  Modal: ModalConfig,
+  Table: TableConfig,
+  TableColumn: TableColumnConfig,
+  Form: FormConfig,
+  FormItem: FormItemConfig
 };
