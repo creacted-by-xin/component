@@ -217,7 +217,7 @@ const componentsConfig: ComponentConfigMap = {
             },
             {
                 name: 'reset',
-                label: '重置表单项'
+                label: '重置表单'
             }
         ]
     },
@@ -264,7 +264,6 @@ const componentsConfig: ComponentConfigMap = {
                 ],
             }
         ],
-       
     }
 };
 

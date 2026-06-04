@@ -1,33 +1,33 @@
 import { Form as AntdForm, Input, DatePicker } from 'antd';
-import React, { useRef, useEffect, useMemo } from "react";
-import { useMamerialDrop } from '../../hooks/useMamerialDrop';
-import { useDrag } from 'react-dnd';
+import React, { useMemo, type ForwardRefRenderFunction, useImperativeHandle } from "react";
 import { type CommonComponentProps } from "../../interface";
+import dayjs from 'dayjs';
 
-const Form = ({ id, name, children, style, onFinish }: CommonComponentProps) => {
-    const ref = useRef(null);
+interface ForRef {
+    submit: ()=> void,
+    reset: ()=> void
+};
+
+const Form: ForwardRefRenderFunction<ForRef, CommonComponentProps> = ({ id, name, children, style, onFinish }, ref) => {
     const [form] = AntdForm.useForm();
 
-    const { canDrop, drop } = useMamerialDrop(id, ['FormItem']);
-
-    const [, drag] = useDrag(() => ({
-        type: 'Form',
-        item: {
-            type: 'Form',
-            id,
-            dragType: 'move'
+    useImperativeHandle(ref,() => {
+        return {
+            submit: ()=> {form.submit(); console.log('123')},
+            reset: ()=> form.resetFields(),
         }
-    }));
-
-    useEffect(() => {
-        drop(ref)
-        drag(ref)
-    }, []);
+    })
 
     const formItems = useMemo(() => {
         console.log('zengjiaz')
         return (
             React.Children?.map(children, (item: any) => {
+                console.log({
+                    label: item.props?.label,
+                    name: item.props?.name,
+                    type: item.props?.type,
+                    id: item.props?.id
+                })
                 return ({
                     label: item.props?.label,
                     name: item.props?.name,
@@ -52,9 +52,9 @@ const Form = ({ id, name, children, style, onFinish }: CommonComponentProps) => 
         <div
             data-component-id={id}
             ref={ref}
-            className={`border min-h-25 p-5 ${canDrop ? 'border-2 border-blue-700' : ''} `}
+            className={`border min-h-25 p-5 } `}
             style={style}>
-            <AntdForm form={form}>
+            <AntdForm form={form} onFinish={save}>
                 {
                     formItems.map((item: any) => {
                         return (

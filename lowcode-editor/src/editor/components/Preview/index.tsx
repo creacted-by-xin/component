@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import { useComponentsStore } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 import { type ComponentType } from "../../stores/components";
@@ -18,13 +18,14 @@ export default function Preview() {
     // 拿到组件的配置对象onClick、onMouseEnter等事件
     componentsConfig[component.name].events?.forEach((event: ComponentEvent) => {
       // 拿到组件配置的事件对应的配置对象
-      const eventConfig = component.props[event.name];
+      console.log('component.props', component.props)
+      const eventConfig = component.props?.[event.name];
       // 如果配置了事件
       if (eventConfig) {
         // 根据事件类型，生成对应的事件处理函数
         // props[onClick]函数
-        props[event.name] = () => {
-          (eventConfig.actions?.forEach((action:ConfigType) => {
+        props[event.name] = (...args: []) => {
+          (eventConfig.actions?.forEach((action: ConfigType) => {
             switch (action.type) {
               case 'jumpLink':
                 if (action.url) {
@@ -40,24 +41,24 @@ export default function Preview() {
                   }
                 }
                 break;
-                case 'customJS':
-                  const func = new Function('context', action.code);
-                  func({
-                    name: component.name,
-                    porps: component.name,
-                    showMessage(content: string) {
-                       message.success(content)
-                    }
-                  });
+              case 'customJS':
+                const func = new Function('context', 'args', action.code);
+                func({
+                  name: component.name,
+                  porps: component.name,
+                  showMessage(content: string) {
+                    message.success(content)
+                  }
+                }, args);
                 break;
-                case 'componentMethod':
-                  // 拿到组件实例，调用对应方法
-                  const componentMethods = componentRefs.current[action.config.componentId];
-                   
-                  if(componentMethods) {
-                    componentMethods[action.config.method]?.();
-                  };
-                  break;
+              case 'componentMethod':
+                // 拿到组件实例，调用对应方法
+                const componentMethods = componentRefs.current[action.config.componentId];
+
+                if (componentMethods) {
+                  componentMethods[action.config.method]?.(...args);
+                };
+                break;
             }
           })
           )
@@ -84,7 +85,7 @@ export default function Preview() {
           id: component.id,
           name: component.name,
           style: component.style,
-          ref: (ref: Record<string, any>) => {componentRefs.current[component.id] = ref;},
+          ref: (ref: Record<string, any>) => { componentRefs.current[component.id] = ref; },
           ...config.defaultProps,
           // 事件处理函数
           ...component.props,

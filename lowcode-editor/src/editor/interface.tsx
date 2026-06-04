@@ -7,8 +7,6 @@ export interface CommonComponentProps extends PropsWithChildren {
     [key: string]: any
 };
 
-
-
 /* 
 当类型特别多时，不把所有类型都堆在一个文件里
 而是每个组件维护自己的config
@@ -138,6 +136,7 @@ interface FormItemConfig extends BaseConfigType {
     type: 'formItem',
     proptiesSetters?: setterConfig[],
     stylesSetters?: setterConfig[],
+    
 };
 
 export type Config = PageConfig | ContainerConfig | ButtonConfig | ModalConfig | TableConfig | TableColumnConfig | FormConfig | FormItemConfig
